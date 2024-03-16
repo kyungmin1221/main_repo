@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>푸드리움</title>
+  <th:block th:include="common/include-link"></th:block>
+</head>
+<body class="sb-nav-fixed">
+  <nav th:replace="common/header"></nav>
+
+  <div class="container">
+    <h1 class="m-5">
+      음식점 정보
+    </h1>
+    <div class="d-flex">
+
+      <div class="card m-5">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body mb-3">
+          <h5 class="card-title">음식점 정보</h5>
+          <p class="card-text">상호명 : </p>
+          <p class="card-text">주소 : </p>
+          <p class="card-text">운영 시간 : </p>
+          <p class="card-text">보유 포인트 : </p>
+          <button type="button" th:onclick="|location.href='@{/stores/register}'|" class="btn btn-primary">정보 등록</button>
+          <button type="button" class="btn btn-success">정보 수정</button>
+          <button type="button" class="btn btn-danger">정보 삭제</button>
+        </div>
+      </div>
+
+      <!--  관리 버튼  -->
+      <div class="d-grid gap-2 col-3 h-50 mt-5">
+        <button type="button" th:onclick="|location.href='@{/stores/menus}'|" class="btn btn-warning btn-lg">음식점 메뉴 관리</button>
+        <button type="button" th:onclick="|location.href='@{/stores/orders}'|" class="btn btn-info btn-lg">음식점 주문 현황 관리</button>
+      </div>
+
+    </div>
+
+  </div>
+  <th:block th:include="common/include-script"></th:block>
+</body>
+</html>
