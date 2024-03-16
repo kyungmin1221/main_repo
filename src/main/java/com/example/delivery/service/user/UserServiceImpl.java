@@ -25,15 +25,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRegisterDto.UserRegisterResponseDto registerUser(UserRegisterDto.UserRegisterRequestDto requestDto) {
-        if (!requestDto.getPassword().equals(requestDto.getConfirmPassword())) {
-            throw new CustomException(ErrorCode.WRONG_CONFIRM_PASSWORD);
-        }
+//        if (!requestDto.getPassword().equals(requestDto.getConfirmPassword())) {
+//            throw new CustomException(ErrorCode.WRONG_CONFIRM_PASSWORD);
+//        }
 
         String email = requestDto.getEmail();
         String nickname = requestDto.getNickname();
         String password = passwordEncoder.encode(requestDto.getPassword());
         long point = requestDto.getPoint();
-        Role role = requestDto.getRole();
+        Role role = requestDto.getRole() == null ? Role.USER : Role.CEO;
 
         Optional<User> checkUserEmail = userRepository.findByEmail(email);
 

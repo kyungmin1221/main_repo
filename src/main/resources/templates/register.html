@@ -1,31 +1,140 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입</title>
+    <title>회 원 가 입</title>
+    <meta name="viewport" content="width= device-width" initial-scale="1">
+    <th:block th:include="common/include-link"></th:block>
 </head>
 <body>
-<h2>회원가입</h2>
-<form th:action="@{/signup}"  method="post">
+<nav th:replace="common/header"></nav>
+<div class="container-fluid py-5" >
+    <br><br><br><br>
     <div>
-        <label for="email">이메일:</label>
-        <input type="email" id = "email" name="email" required>
+        <h1 class="display-4">Join MemberShip</h1>
+        <br><br>
+        <form action="signup" method="post" onsubmit="return checkSubmit()">
+            <ul class="list-group btn-block">
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>Email</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input type="text" pattern="[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$" title="이메일 형식에 맞춰 입력하세요." name="email" id="newEmail" style="margin: 1px" maxlength="40">
+                        <input type="hidden" id="emailChecked">
+                    </div>
+                    <div class="col-8  col-md-4 text-center" id="emailMsg" style="float: left;"></div>
+                </li>
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>Nickname</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input required="required" type="text" maxlength="15" name="nickname" id="nickname" style="margin: 1px" placeholder="글자수 제한 15">
+                        <input type="hidden" id="nicknameChecked"></div><div class="col-8  col-md-4 text-center" id="nickMsg" style="float: left;">
+                </div>
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>Password</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input required="required" type="password" name="password" id="pw1" style="margin: 1px" maxlength="20" placeholder="20자 이하 입력">
+                    </div>
+                </li>
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>RetypePassword</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input required="required" maxlength="20" type="password" name="pw2" id="pw2" style="margin: 1px" >
+                        <input type="hidden" id="passwordChecked">
+                    </div>
+                    <div class="col-8  col-md-4 text-center" id="isEqual" style="float: left;">
+                    </div>
+                </li>
+            </ul>
+            <br>
+            <button class="btn btn-primary btn-lg" type="submit">SignUp</button>
+            <br><br>
+            <hr class="my-4">
+            <p> 푸드리움 서비스는 회원님의 소중한 정보를 보호하고 있습니다!</p>
+
+        </form>
     </div>
-    <div>
-        <label for="nickname">닉네임:</label>
-        <input type="text" id = "nickname" name="nickname" pattern="^[가-힣a-zA-Z]{2,10}$" title="닉네임은 한/영 2자이상 10자이하로 입력해주세요" required>
-    </div>
-    <div>
-        <label for="password">비밀번호:</label>
-        <input type="password" id = "password" name="password" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\\\|,.<>\\/?]).{8,15}$" title="비밀번호는 최소 8자 이상, 15자 이하이며, 적어도 하나의 소문자, 대문자, 숫자, 특수문자를 포함해야 합니다." required>
-    </div>
-    <div>
-        <label for="confirmPassword">비밀번호 확인:</label>
-        <input type="password" id = "confirmPassword" name="confirmPassword" required>
-    </div>
-    <!-- 포인트와 역할(Role) 필드는 사용자 입력으로 처리하지 않는 경우가 많습니다. -->
-    <!-- 포인트는 기본값을 설정하거나, 역할은 선택 또는 사전 정의된 값으로 설정할 수 있습니다. -->
-    <button type="submit">회원가입</button>
-</form>
+</div>
 </body>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<th:block th:include="common/include-script"></th:block>
+
+<script type="text/javascript">
+    $("#header").load("header.html");
+
+    $("#newEmail").on("keyup",function() {
+            if($("#newEmail").val().length < 7){
+            $("#emailMsg").html("사용불가 이메일");
+            }else{
+            $.ajax({
+                type : "post",
+                url : "/email-check",
+                data : {
+                    "email" : $("#newEmail").val()
+                },
+                dataType : "json",
+                success : function(data) {
+                    if(data == false){
+                        $("#emailMsg").css("color","blue")
+                        $("#emailMsg").html("사용 가능");
+                        $("#emailChecked").val(true);
+                    }else{
+                        $("#emailMsg").css("color","red")
+                        $("#emailMsg").html("사용 불가능");
+                        $("#emailChecked").val(false);
+                    }
+                },
+                error: function onError(error){
+    console.error(error);
+  }
+            });
+        }})
+
+    $("#nickname").on("keyup",function() {
+            if($("#nickname").val().length == 0){
+                $("#nickMsg").css("color","black")
+                $("#nickMsg").html("닉네임을 입력하세요");
+                $("#nicknameChecked").val(false);
+            }else{
+            $.ajax({
+                type : "post",
+                url : "/nickname-check",
+                data : {
+                    "nickname" : $("#nickname").val()
+                },
+                dataType : "json",
+                success : function(data) {
+                    if(data == false){
+                        $("#nickMsg").css("color","blue")
+                        $("#nickMsg").html("사용 가능");
+                        $("#nicknameChecked").val(true);
+                    }else{
+                        $("#nickMsg").css("color","red")
+                        $("#nickMsg").html("사용 불가능");
+                        $("#nicknameChecked").val(false);
+                    }
+                }
+            });
+            }
+    })
+
+    $("#pw2").on("keyup", function() {
+            if ($("#pw1").val() == $("#pw2").val()){
+                $("#isEqual").html("<font color='blue'> 일치</font>");
+                $("#passwordChecked").val(true);
+            }else {
+                $("#isEqual").html("<font color='red'> 불일치</font>");
+                $("#passwordChecked").val(false);
+            }});
+
+    var checkSubmit = function(){
+        if ( $("#emailChecked").val() == "true" && $("#nicknameChecked").val() == "true" && $("#passwordChecked").val() == "true" ){
+            return true;
+        }else{
+            alert('중복여부를 확인 하세요');
+        return false;}
+    }
+</script>
 </html>
