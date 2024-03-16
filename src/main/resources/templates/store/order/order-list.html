@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>푸드리움</title>
+    <th:block th:include="common/include-link"></th:block>
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="common/header"></nav>
+<div class="container">
+    <h1 class="m-5">
+        실시간 주문 관리
+    </h1>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">고객명</th>
+            <th scope="col">연락처</th>
+            <th scope="col">배달 주소</th>
+            <th scope="col">주문 내역</th>
+            <th scope="col">배달 상태</th>
+            <th scope="col" style="text-align: right">배달 완료처리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>김상윤</td>
+            <td>010-1234-1234</td>
+            <td>서울시 강북구 수유동</td>
+            <td><a href="#">주문 내역 보기</a></td>
+            <td class="text-primary">배달 완료</td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>김상윤</td>
+            <td>010-1234-1234</td>
+            <td>서울시 강북구 수유동</td>
+            <td><a href="#">주문 내역 보기</a></td>
+            <td class="text-primary">배달 완료</td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>김상윤</td>
+            <td>010-1234-1234</td>
+            <td>서울시 강북구 수유동</td>
+            <td><a href="#">주문 내역 보기</a></td>
+            <td class="text-danger">배달중</td>
+            <td style="text-align: right">
+                <button type="button" class="btn btn-primary btn-sm">완료</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<th:block th:include="common/include-script"></th:block>
+</body>
+</html>
