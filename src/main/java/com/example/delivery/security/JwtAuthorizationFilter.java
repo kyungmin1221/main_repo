@@ -18,7 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
@@ -33,14 +32,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
 
-
-        // jwtAuthentication 에서 달라졌던 getJwtFromHeader 을 사용하여 순수한 코드를 바로 뽑아낼 수 있음
-        String tokenValue = jwtUtil.getJwtFromHeader(req);
+        String tokenValue = jwtUtil.getTokenFromRequest(req);
 
         if (StringUtils.hasText(tokenValue)) {
+            // JWT 토큰 substring
+            tokenValue = jwtUtil.substringToken(tokenValue);
+            log.info(tokenValue);
 
             if (!jwtUtil.validateToken(tokenValue)) {
-                log.error("Token 오류!!");
+                log.error("Token Error");
                 return;
             }
 
@@ -63,7 +63,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         Authentication authentication = createAuthentication(username);
         context.setAuthentication(authentication);
 
-        // contextHolder 에 값 세팅
         SecurityContextHolder.setContext(context);
     }
 
@@ -73,4 +72,3 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
-

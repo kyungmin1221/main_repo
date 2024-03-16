@@ -15,16 +15,17 @@ import java.util.HashMap;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/signup")
+    @GetMapping("/user/signup")
     public String showSignUpForm() {
         return "register";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public String registerUser(@ModelAttribute("user") @Valid  UserRegisterDto.UserRegisterRequestDto requestDto,
                                RedirectAttributes redirectAttributes) {
 
@@ -38,6 +39,11 @@ public class UserController {
             return "/register"; // 실패 시, 회원가입 폼으로 다시 리다이렉트
         }
 
+    }
+
+    @GetMapping("/user/login-page")
+    public String loginPage() {
+        return "login";
     }
 
 
