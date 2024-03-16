@@ -1,4 +1,4 @@
-package com.example.delivery.global.exception;
+package com.example.delivery.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 

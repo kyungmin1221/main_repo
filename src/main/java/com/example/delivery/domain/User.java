@@ -2,6 +2,7 @@ package com.example.delivery.domain;
 
 import com.example.delivery.constant.Role;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,10 +24,19 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private Integer point;
+    private long point;
 
     @Column(nullable = false)
     private Role role;
+
+    @Builder
+    public User(String email, String password , String nickname, long point, Role role) {
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.point = point;
+        this.role = role;
+    }
 
 
 }
