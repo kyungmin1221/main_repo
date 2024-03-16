@@ -23,11 +23,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
 
+    @Transactional
     @Override
     public UserRegisterDto.UserRegisterResponseDto registerUser(UserRegisterDto.UserRegisterRequestDto requestDto) {
-//        if (!requestDto.getPassword().equals(requestDto.getConfirmPassword())) {
-//            throw new CustomException(ErrorCode.WRONG_CONFIRM_PASSWORD);
-//        }
 
         String email = requestDto.getEmail();
         String nickname = requestDto.getNickname();

@@ -19,9 +19,18 @@
                     <div class='col-4 col-md-4 text-center' style='float: left;'>Email</div>
                     <div class='col-8 col-md-4 text-center' style='float: left;'>
                         <input type="text" pattern="[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$" title="이메일 형식에 맞춰 입력하세요." name="email" id="newEmail" style="margin: 1px" maxlength="40">
-                        <input type="hidden" id="emailChecked">
+                        <button type="button" id="emailVerifyBtn">인증번호 요청</button>
                     </div>
-                    <div class="col-8  col-md-4 text-center" id="emailMsg" style="float: left;"></div>
+                    <div class="col-8 col-md-4 text-center" id="emailMsg" style="float: left;"></div>
+                </li>
+                <input type="hidden" id="emailVerified" value="false">
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>인증번호</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input type="text" name="verificationCode" id="verificationCode" style="margin: 1px" maxlength="6">
+                        <button type="button" id="verifyCodeBtn">인증번호 확인</button>
+                    </div>
+                    <div class="col-8 col-md-4 text-center" id="codeVerifyMsg" style="float: left;"></div>
                 </li>
                 <li class='list-group-item'>
                     <div class='col-4 col-md-4 text-center' style='float: left;'>Nickname</div>
@@ -129,12 +138,53 @@
                 $("#passwordChecked").val(false);
             }});
 
+    $("#emailVerifyBtn").click(function() {
+        $.ajax({
+            type: "post",
+            url: "/email-verification",
+            data: {
+                "email": $("#newEmail").val()
+            },
+            success: function(response) {
+                $("#emailMsg").html("인증번호가 발송되었습니다. 이메일을 확인해 주세요.");
+            },
+            error: function() {
+                $("#emailMsg").html("인증번호 발송 실패. 다시 시도해 주세요.");
+            }
+        });
+    });
+
+    // 인증번호 확인 이벤트 처리
+    $("#verifyCodeBtn").click(function() {
+        $.ajax({
+            type: "get",
+            url: "/email-verification",
+            data: {
+                "email": $("#newEmail").val(),
+                "code": $("#verificationCode").val()
+            },
+            success: function(response) {
+                if(response === true) {
+                    $("#codeVerifyMsg").html("인증 성공");
+                    $("#emailVerified").val("true"); // 이메일 인증 상태 업데이트
+                } else {
+                    $("#codeVerifyMsg").html("인증 실패. 코드를 확인해 주세요.");
+                }
+            },
+            error: function() {
+                $("#codeVerifyMsg").html("인증 확인 실패. 다시 시도해 주세요.");
+            }
+        });
+    });
+
     var checkSubmit = function(){
-        if ( $("#emailChecked").val() == "true" && $("#nicknameChecked").val() == "true" && $("#passwordChecked").val() == "true" ){
-            return true;
-        }else{
-            alert('중복여부를 확인 하세요');
-        return false;}
+        // 이메일 인증 확인
+        if ($("#emailVerified").val() != "true") {
+            alert('이메일 인증을 완료해 주세요');
+            return false; // 이메일 인증이 완료되지 않았으면 폼 제출 방지
+        }
+
+        return true; // 이메일 인증이 성공적으로 완료되었으면 폼 제출 허용
     }
 </script>
 </html>
