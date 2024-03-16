@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>푸드리움</title>
+    <th:block th:include="common/include-link"></th:block>
+    <style>
+        input {
+    background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
+    background-position: 13px center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+
+    padding: 5px 5px;
+    text-indent: 30px;
+
+    width: 120px;
+}
+
+input:focus {
+    background-image: none;
+    background-position: -10px center;
+    text-indent: 0;
+    width: 50%;
+}
+    </style>
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="common/header"></nav>
+<div class="container px-4 py-5" id="custom-cards">
+    <div class="container mt-4 mb-4 d-flex justify-content-center">
+        <form action="#" method="post" class="d-flex align-items-center">
+            <input type="text" class="form-control me-2" name="search_title" placeholder=" 무슨 음식을 찾으시나요"
+                   style="width: 500px; display: inline-block;">
+            <button type="submit" class="btn btn-outline-primary btn-sm">검색</button>
+        </form>
+    </div>
+    <!-- 반복문 사용해서 아래코드 만들기 -->
+<!--    <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">-->
+<!--        <div class="col">-->
+<!--            <a href="{{ url_for('show_place_details', content_id=item.content_id) }}" class="card-link">-->
+<!--                <div class="card h-100">-->
+<!--                    {% if item.image_url %}-->
+<!--                    <img src="{{ item.image_url }}" alt="{{ item.title }}" class="card-img-top" style="height: 200px;">-->
+<!--                    {% else %}-->
+<!--                    <img src="https://korean.visitseoul.net/data/POST/20170425//201704251508226961"-->
+<!--                         alt="{{ item.title }}" class="card-img-top" style="height: 200px;">-->
+
+<!--                    {% endif %}-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title" style="font-size: 18px;">{{ item.title }}</h5>-->
+<!--                        <p class="card-text" style="font-size: 15px;">{{ item.location }}</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </a>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+<th:block th:include="common/include-script"></th:block>
+</body>
+</html>
