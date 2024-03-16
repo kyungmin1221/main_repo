@@ -26,6 +26,7 @@ public class User {
     @Column(nullable = false)
     private long point;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
