@@ -53,6 +53,18 @@
                     <div class="col-8  col-md-4 text-center" id="isEqual" style="float: left;">
                     </div>
                 </li>
+                <li class='list-group-item'>
+                    <div class='col-12 text-center'>
+                        <input type="checkbox" id="authorityCheck" name="authority">
+                        <label for="authorityCheck">사장님 인증 필요</label>
+                    </div>
+                </li>
+                <li class='list-group-item' id="tokenSection" style="display:none;">
+                    <div class='col-12 text-center'>
+                        <label for="ceoToken">사장님 인증 토큰:</label>
+                        <input type="text" id="ceoToken" name="ceoToken" placeholder="토큰 입력">
+                    </div>
+                </li>
             </ul>
             <br>
             <button class="btn btn-primary btn-lg" type="submit">SignUp</button>
@@ -176,12 +188,26 @@
             }
         });
     });
+    $(document).ready(function() {
+        $("#authorityCheck").change(function() {
+            if (this.checked) {
+                $("#tokenSection").show();
+            } else {
+                $("#tokenSection").hide();
+            }
+        });
+    });
 
     var checkSubmit = function(){
         // 이메일 인증 확인
         if ($("#emailVerified").val() != "true") {
             alert('이메일 인증을 완료해 주세요');
             return false; // 이메일 인증이 완료되지 않았으면 폼 제출 방지
+        }
+        // "사장님 인증 필요" 체크박스가 선택되었으나 토큰이 입력되지 않은 경우
+        if ($("#authorityCheck").is(":checked") && $("#ceoToken").val().trim() === "") {
+            alert('사장님 인증 토큰을 입력해 주세요');
+            return false; // 사장님 인증 토큰이 입력되지 않았으면 폼 제출 방지
         }
 
         return true; // 이메일 인증이 성공적으로 완료되었으면 폼 제출 허용
