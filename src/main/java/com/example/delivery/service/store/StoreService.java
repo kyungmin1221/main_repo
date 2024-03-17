@@ -8,4 +8,6 @@ import java.io.IOException;
 public interface StoreService {
 
     void registerStore(StoreDto.CreateRequest requestDto, User user) throws IOException;
+
+    StoreDto.InfoResponse getStoreInfo(User user);
 }

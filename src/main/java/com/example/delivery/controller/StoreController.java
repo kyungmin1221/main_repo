@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,9 @@ public class StoreController {
 
     // 음식점 정보 마이페이지
     @GetMapping
-    public String storeMyPage() {
+    public String getStoreInfo(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        StoreDto.InfoResponse storeInfo = storeService.getStoreInfo(userDetails.getUser());
+        model.addAttribute("storeInfo", storeInfo);
         return "store/mypage";
     }
 

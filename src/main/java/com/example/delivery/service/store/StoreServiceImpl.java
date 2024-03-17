@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +41,25 @@ public class StoreServiceImpl implements StoreService {
                 .user(user)
                 .build();
         storeRepository.save(store);
+    }
+
+    @Override
+    public StoreDto.InfoResponse getStoreInfo(User user) {
+        Optional<Store> findStore = storeRepository.findByUserId(user.getId());
+        if (findStore.isPresent()) {
+            Store store = findStore.get();
+
+            return StoreDto.InfoResponse.builder()
+                    .name(store.getName())
+                    .workTime(store.getWorkTime())
+                    .category(store.getCategory())
+                    .address(store.getAddress())
+                    .storeScore(store.getStoreScore())
+                    .likeCount(store.getLikeCount())
+                    .totalSales(store.getTotalSales())
+                    .imageUrl(store.getImageUrl())
+                    .build();
+        }
+        return null;
     }
 }
