@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>푸드리움</title>
+    <th:block th:include="common/include-link"></th:block>
+    <style>
+        input {
+    background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
+    background-position: 13px center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+
+    padding: 5px 5px;
+    text-indent: 30px;
+
+    width: 120px;
+}
+
+input:focus {
+    background-image: none;
+    background-position: -10px center;
+    text-indent: 0;
+    width: 50%;
+}
+    </style>
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="common/header"></nav>
+<div class="container" style="height: 80px">
+</div>
+<div class="container">
+    <div class="row" style="background-color:#F0F8FF">
+        <div class="col-2">
+            <img src="/img/logo2.png" alt="Store Logo" height="200" width="200">
+        </div>
+        <div class="col-6 align-self-center">
+            <h1>만리장성 ♥♡</h1>
+            <p><span style="color:#ffd43c">★</span> &nbsp&nbsp 4.5 </p>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-6" id="menuCard" style="background-color:blue">
+            <div class="row">
+            <div class="card" style="width: 11rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick exf the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+            <div class="card" style="width: 11rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick exf the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+            <div class="card" style="width: 11rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick exf the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="card" style="width: 10rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick exf the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 10rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick exf the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 10rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick exf the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6" style="background-color:green">
+            <ol class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-start active">
+                    <div class="ms-2 me-auto">
+                        <h3>내가 선택한 주문</h3>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="col-sm align-self-center">
+                        <div class="fw-bold">&nbsp;&nbsp;짜장면</div>
+                    </div>
+                    <div class="col-sm align-self-center">
+                        <div class="fw-bold">36,000 P &nbsp;&nbsp;</div>
+                    </div>
+                    <div class="col-sm input-group">
+                        <div class="input-group-prepend" id="1">
+                            <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px">-</button>
+                            <span id="quantity1">&nbsp;1&nbsp;</span>
+                            <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px">+</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Cras justo odio
+                    </div>
+                    <span class="badge bg-primary rounded-pill">14</span>
+                </li>
+            </ol>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <div></div>
+                <button class="btn btn-outline-primary" type="button">주문하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = () => {
+      findAllComment();
+    }
+
+      function findAllComment() {
+
+<!--            const postId = [[ ${post.id} ]];-->
+
+          $.ajax({
+              url : `/stores/1/menu`,
+              type : 'get',
+              dataType : 'json',
+              async : false,
+              success : function (response) {
+
+                  if ( !response.length ) {
+                      document.querySelector('#menuCard').innerHTML = '<div><p>등록된 메뉴가 없습니다.</p></div>';
+                      return false;
+                  }
+
+                  let menuCardHtml = '';
+                  response.forEach(row => {
+                      menuCardHtml += `
+                          <div class="card" style="width: 11rem;">
+                              <img src="${row.image}" class="card-img-top" alt="...">
+                              <div class="card-body">
+                                  <h5 class="card-title">Card title</h5>
+                                  <p class="card-text">Some quick exf the card's content.</p>
+                                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                              </div>
+                          </div>
+                      `;
+                  })
+                  document.querySelector('#menuCard').innerHTML = menuCardHtml;
+              },
+              error : function (request, status, error) {
+                  console.log(error)
+              }
+          })
+      }
+</script>
+
+<th:block th:include="common/include-script"></th:block>
+</body>
+</html>
