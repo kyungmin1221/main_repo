@@ -19,17 +19,22 @@
     <div class="d-flex">
 
       <div class="card m-5">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body mb-3">
-          <h5 class="card-title">음식점 정보</h5>
-          <p class="card-text">상호명 : </p>
-          <p class="card-text">주소 : </p>
-          <p class="card-text">운영 시간 : </p>
-          <p class="card-text">보유 포인트 : </p>
-          <button type="button" th:onclick="|location.href='@{/stores/register}'|" class="btn btn-primary">정보 등록</button>
-          <button type="button" class="btn btn-success">정보 수정</button>
-          <button type="button" class="btn btn-danger">정보 삭제</button>
+        <div th:if="${storeInfo == null}">
+          음식점 정보가 없습니다.<br>
+          음식점 정보를 등록 해주세요.
         </div>
+
+        <div class="card-body mb-3" th:if="${storeInfo != null}">
+          <img th:src="${storeInfo.imageUrl}" class="card-img-top" alt="...">
+          <p class="card-text">상호명 : <span th:text="${storeInfo.name}"></span></p>
+          <p class="card-text">주소 : <span th:text="${storeInfo.address}"></span></p>
+          <p class="card-text">운영 시간 : <span th:text="${storeInfo.workTime}"></span></p>
+          <p class="card-text">보유 포인트 : <span th:text="${storeInfo.totalSales}"></span></p>
+
+        </div>
+        <button type="button" th:onclick="|location.href='@{/stores/register}'|" class="btn btn-primary mb-3">정보 등록</button>
+        <button type="button" th:onclick="|location.href='@{/stores/update}'|" class="btn btn-success mb-3">정보 수정</button>
+        <button type="button" class="btn btn-danger">정보 삭제</button>
       </div>
 
       <!--  관리 버튼  -->

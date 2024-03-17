@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>푸드리움</title>
+    <th:block th:include="common/include-link"></th:block>
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="common/header"></nav>
+<div class="container">
+    <h1 class="m-5">
+        주문 내역
+    </h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">주문 메뉴</th>
+            <th scope="col">수량</th>
+            <th scope="col">금액</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>허니콤보</td>
+            <td>2</td>
+            <td>44,000</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>허니 오리지널</td>
+            <td>1</td>
+            <td>20,000</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>레드콤보</td>
+            <td>2</td>
+            <td>44,000</td>
+        </tr>
+        </tbody>
+    </table>
+    <b><p style="text-align: right; color: red">총 주문 금액 : 108,000 원</p></b>
+</div>
+<th:block th:include="common/include-script"></th:block>
+</body>
+</html>

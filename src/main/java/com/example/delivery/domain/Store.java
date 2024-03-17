@@ -1,0 +1,52 @@
+package com.example.delivery.domain;
+
+import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
+@NoArgsConstructor
+public class Store {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "store_id")
+    private Integer id;
+
+    @Column(nullable = false, length = 50)
+    private String name;
+
+    @Column(nullable = false, length = 20)
+    private String workTime;
+
+    @Column(nullable = false, length = 25)
+    private String category;
+
+    @Column(nullable = false, length = 100)
+    private String address;
+
+    private String imageUrl;
+
+    private float storeScore;
+    private int likeCount;
+    private double totalSales;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Builder
+    public Store(Integer id, String name, String workTime, String category, String address, String imageUrl, float storeScore, int likeCount, double totalSales, User user) {
+        this.id = id;
+        this.name = name;
+        this.workTime = workTime;
+        this.category = category;
+        this.address = address;
+        this.imageUrl = imageUrl;
+        this.storeScore = storeScore;
+        this.likeCount = likeCount;
+        this.totalSales = totalSales;
+        this.user = user;
+    }
+}
