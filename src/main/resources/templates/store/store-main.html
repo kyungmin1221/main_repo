@@ -37,6 +37,7 @@
     <div class="row">
         <div class="col-6" id="menuCard"></div>
         <div class="col-6" >
+            <form action="/store-main" method="post">
             <ol class="list-group" id="menuList">
                 <li class="list-group-item d-flex justify-content-between align-items-start active">
                     <div class="ms-2 me-auto">
@@ -51,8 +52,9 @@
             </ol>
             <div class="d-grid gap-2 col-6 mx-auto">
                 <div></div>
-                <button class="btn btn-outline-primary" type="button">주문하기</button>
+                <button class="btn btn-outline-primary" type="submit">주문하기</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -61,6 +63,7 @@
           findAllComment();
         }
         var menuList;
+        var menuMap = new Map();
          function findAllComment() {
 
               $.ajax({
@@ -103,21 +106,27 @@
 
 
     function addList(i) {
+    if(menuMap.has(i)) return;
+    menuMap.set(i,i);
      let menuListHtml = document.querySelector('#menuList').innerHTML;
     document.querySelector('#menuDefault').innerHTML = '';
     menuListHtml += `
         <li class="list-group-item d-flex justify-content-between align-items-start"  id="menuLi${i}">
+        <input type="hidden" name="menus[${i}].menuId">
+
             <div class="col-sm align-self-center">
-                <div class="fw-bold">&nbsp;&nbsp;${menuList[i].name}</div>
+                <div class="fw-bold"><button class="btn btn-danger" type="button" style="width: 35px"
+                    onclick="removeHtml(${i})">X</button>
+                    &nbsp;&nbsp;${menuList[i].name}</div>
             </div>
             <div class="col-sm align-self-center">
-                <input type="number" id="price${i}"  value="${menuList[i].price}" disabled>
+                <input type="number" id="price${i}" name="menus[${i}].totalPrice"  value="${menuList[i].price}" disabled>
             </div>
             <div class="col-sm input-group">
                     <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
                     onclick="subQuantity(${i})"
                     >-</button>
-                    <input type="number" id="quantity${i}" class="form-control text-center" value="1" disabled>
+                    <input type="number" id="quantity${i}"name="menus[${i}].quantity" class="form-control text-center" value="1" disabled>
                     <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
                     onclick="addQuantity(${i})">+</button>
             </div>
@@ -146,8 +155,12 @@
     }
 
         function removeHtml(i) {
+        if(menuMap.has(i)){
+            menuMap.delete(i);
+        }
         document.querySelector('#menuLi'+i).remove();
     }
+
 </script>
 
 <th:block th:include="common/include-script"></th:block>
