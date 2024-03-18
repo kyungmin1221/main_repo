@@ -9,25 +9,9 @@
     <title>푸드리움</title>
     <th:block th:include="common/include-link"></th:block>
     <style>
-        input {
-    background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
-    background-position: 13px center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    border: 1px solid #ccc;
-
-    padding: 5px 5px;
-    text-indent: 30px;
-
-    width: 120px;
-}
-
-input:focus {
-    background-image: none;
-    background-position: -10px center;
-    text-indent: 0;
-    width: 50%;
-}
+    a:link { color: black; text-decoration: none;}
+    a:visited { color: black; text-decoration: none;}
+    a:hover { color: black; text-decoration: none;}
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -47,90 +31,22 @@ input:focus {
         </div>
     </div>
 </div>
+<div class="container" style="height: 80px">
+</div>
 <div class="container">
     <div class="row">
-        <div class="col-6" id="menuCard" style="background-color:blue">
-            <div class="row">
-            <div class="card" style="width: 11rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick exf the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-            <div class="card" style="width: 11rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick exf the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-            <div class="card" style="width: 11rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick exf the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-            </div>
-            <div class="row">
-                <div class="card" style="width: 10rem;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick exf the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-                <div class="card" style="width: 10rem;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick exf the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-                <div class="card" style="width: 10rem;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick exf the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6" style="background-color:green">
-            <ol class="list-group">
+        <div class="col-6" id="menuCard"></div>
+        <div class="col-6" >
+            <ol class="list-group" id="menuList">
                 <li class="list-group-item d-flex justify-content-between align-items-start active">
                     <div class="ms-2 me-auto">
                         <h3>내가 선택한 주문</h3>
                     </div>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="col-sm align-self-center">
-                        <div class="fw-bold">&nbsp;&nbsp;짜장면</div>
-                    </div>
-                    <div class="col-sm align-self-center">
-                        <div class="fw-bold">36,000 P &nbsp;&nbsp;</div>
-                    </div>
-                    <div class="col-sm input-group">
-                        <div class="input-group-prepend" id="1">
-                            <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px">-</button>
-                            <span id="quantity1">&nbsp;1&nbsp;</span>
-                            <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px">+</button>
-                        </div>
-                    </div>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Subheading</div>
-                        Cras justo odio
-                    </div>
-                    <span class="badge bg-primary rounded-pill">14</span>
+                <li class="list-group-item d-flex justify-content-between align-items-start" >
+                <div class="col-sm align-self-center" id="menuDefault">
+                    <div class="fw-bold">주문할 메뉴를 클릭하세요</div>
+                </div>
                 </li>
             </ol>
             <div class="d-grid gap-2 col-6 mx-auto">
@@ -141,46 +57,97 @@ input:focus {
     </div>
 </div>
 <script>
-    window.onload = () => {
-      findAllComment();
+        window.onload = () => {
+          findAllComment();
+        }
+        var menuList;
+         function findAllComment() {
+
+              $.ajax({
+                  url : `/stores/1/menu`,
+                  type : 'get',
+                  dataType : 'json',
+                  async : false,
+                  success : function (response) {
+                       menuList = response;
+                      if ( !response.length ) {
+                          document.querySelector('#menuCard').innerHTML = '<div><p>등록된 메뉴가 없습니다.</p></div>';
+                          return false;
+                      }
+
+                      let menuCardHtml = '';
+                      response.forEach(row => {
+                          menuCardHtml += `
+                          <a href='javascript:void(0);' onclick="addList(${row.menuId});" class="card-link" id=${row.menuId} >
+                            <div class="row g-0">
+                                <div style="height: 154px;" class="col-md-4">
+                                    <img style="height: 100%; width:100%; object-fit:cover;" src="${row.url}" class="img-fluid rounded-start">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body" style="background-color: #DDDDDD">
+                                        <h5 class="card-title">${row.name} - ${row.price} P</h5>
+                                        <p class="card-text overflow-auto" style="height: 130px;">${row.description}</p>
+                                    </div>
+                                </div>
+                            </div>
+                          </a>
+                          `;
+                      })
+                      document.querySelector('#menuCard').innerHTML = menuCardHtml;
+                  },
+                  error : function (request, status, error) {
+                      console.log(error)
+                  }
+              })
+         }
+
+
+    function addList(i) {
+     let menuListHtml = document.querySelector('#menuList').innerHTML;
+    document.querySelector('#menuDefault').innerHTML = '';
+    menuListHtml += `
+        <li class="list-group-item d-flex justify-content-between align-items-start"  id="menuLi${i}">
+            <div class="col-sm align-self-center">
+                <div class="fw-bold">&nbsp;&nbsp;${menuList[i].name}</div>
+            </div>
+            <div class="col-sm align-self-center">
+                <input type="number" id="price${i}"  value="${menuList[i].price}" disabled>
+            </div>
+            <div class="col-sm input-group">
+                    <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
+                    onclick="subQuantity(${i})"
+                    >-</button>
+                    <input type="number" id="quantity${i}" class="form-control text-center" value="1" disabled>
+                    <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
+                    onclick="addQuantity(${i})">+</button>
+            </div>
+        </li>
+        `;
+     document.querySelector('#menuList').innerHTML = menuListHtml;
     }
 
-      function findAllComment() {
+    function addQuantity(i) {
+        var quantity = parseInt(document.querySelector('#quantity'+i).value);
+        quantity += 1;
+        document.querySelector('#quantity'+i).value = quantity;
+        var price = menuList[i].price * quantity;
+        document.querySelector('#price'+i).value = price;
+    }
 
-<!--            const postId = [[ ${post.id} ]];-->
+    function subQuantity(i) {
+        var quantity = parseInt(document.querySelector('#quantity'+i).value);
+        quantity -= 1;
+        document.querySelector('#quantity'+i).value = quantity;
+        var price = menuList[i].price * quantity;
+        document.querySelector('#price'+i).value = price;
+        if(quantity <= 0){
+        removeHtml(i);
+        }
+    }
 
-          $.ajax({
-              url : `/stores/1/menu`,
-              type : 'get',
-              dataType : 'json',
-              async : false,
-              success : function (response) {
-
-                  if ( !response.length ) {
-                      document.querySelector('#menuCard').innerHTML = '<div><p>등록된 메뉴가 없습니다.</p></div>';
-                      return false;
-                  }
-
-                  let menuCardHtml = '';
-                  response.forEach(row => {
-                      menuCardHtml += `
-                          <div class="card" style="width: 11rem;">
-                              <img src="${row.image}" class="card-img-top" alt="...">
-                              <div class="card-body">
-                                  <h5 class="card-title">Card title</h5>
-                                  <p class="card-text">Some quick exf the card's content.</p>
-                                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                              </div>
-                          </div>
-                      `;
-                  })
-                  document.querySelector('#menuCard').innerHTML = menuCardHtml;
-              },
-              error : function (request, status, error) {
-                  console.log(error)
-              }
-          })
-      }
+        function removeHtml(i) {
+        document.querySelector('#menuLi'+i).remove();
+    }
 </script>
 
 <th:block th:include="common/include-script"></th:block>
