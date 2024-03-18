@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j(topic = "StoreController")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/stores")
-public class StoreController {
+public class   StoreController {
 
     private final StoreService storeService;
 
@@ -46,18 +47,20 @@ public class StoreController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) throws IOException {
         storeService.registerStore(requestDto, userDetails.getUser());
-        return "store/mypage";
+        return "redirect:/stores";
     }
 
     // 음식점 정보 수정 폼
     @GetMapping("/update")
-    public String updateStoreForm() {
+    public String updateStorePage() {
         return "store/store-update";
     }
 
     // 메뉴 정보 페이지
     @GetMapping("/menus")
-    public String menuPage() {
+    public String menuPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<StoreDto.MenuInfoResponse> menus = storeService.getMenuInfo(userDetails.getUser());
+        model.addAttribute("menus", menus);
         return "store/menu/menu-list";
     }
 
@@ -65,6 +68,17 @@ public class StoreController {
     @GetMapping("/menus/register")
     public String menuRegisterPage() {
         return "store/menu/menu-register";
+    }
+
+    // 메뉴 등록 요청
+    @PostMapping(value = "/menus/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String menuRegister(
+            @ModelAttribute StoreDto.CreateMenuRequest requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) throws IOException {
+        storeService.menuRegister(requestDto, userDetails.getUser());
+        // return "store/menu/menu-register";
+        return "redirect:/stores/menus";
     }
 
     // 메뉴 수정 폼 페이지

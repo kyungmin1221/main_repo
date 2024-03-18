@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -35,6 +38,12 @@ public class Store {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "store")
+    private List<Menu> menus = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store")
+    private List<Like> likes = new ArrayList<>();
 
     @Builder
     public Store(Integer id, String name, String workTime, String category, String address, String imageUrl, float storeScore, int likeCount, double totalSales, User user) {
