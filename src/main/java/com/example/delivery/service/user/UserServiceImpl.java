@@ -22,8 +22,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
     // ADMIN_TOKEN
-//    private final String CEO_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
     @Value("${app.security.ceoToken}")
     private String CEO_TOKEN;
 
