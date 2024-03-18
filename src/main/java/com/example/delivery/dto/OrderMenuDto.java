@@ -1,10 +1,8 @@
 package com.example.delivery.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMenuDto {
@@ -37,10 +35,4 @@ public class OrderMenuDto {
         private int totalPrice;
     }
 
-    @Getter
-    @AllArgsConstructor
-    @ToString
-    public static class MenuList {
-        private List<MenuReq> menus;
-    }
 }

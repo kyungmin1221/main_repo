@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-6" id="menuCard"></div>
         <div class="col-6" >
-            <form action="/store-main" method="post">
+            <form action="/store-main" method="post" id="menuForm">
             <ol class="list-group" id="menuList">
                 <li class="list-group-item d-flex justify-content-between align-items-start active">
                     <div class="ms-2 me-auto">
@@ -52,7 +52,7 @@
             </ol>
             <div class="d-grid gap-2 col-6 mx-auto">
                 <div></div>
-                <button class="btn btn-outline-primary" type="submit">주문하기</button>
+                <button class="btn btn-outline-primary" type="button" onclick="onSubmit()">주문하기</button>
             </div>
             </form>
         </div>
@@ -107,26 +107,30 @@
 
     function addList(i) {
     if(menuMap.has(i)) return;
+
     menuMap.set(i,i);
-     let menuListHtml = document.querySelector('#menuList').innerHTML;
-    document.querySelector('#menuDefault').innerHTML = '';
+     var menuListHtml = document.querySelector('#menuList').innerHTML;
+
     menuListHtml += `
         <li class="list-group-item d-flex justify-content-between align-items-start"  id="menuLi${i}">
-        <input type="hidden" name="menus[${i}].menuId">
-
             <div class="col-sm align-self-center">
+            <input type="hidden" name="menus[${i}][menuId]" value="${i}">
+
+
                 <div class="fw-bold"><button class="btn btn-danger" type="button" style="width: 35px"
                     onclick="removeHtml(${i})">X</button>
                     &nbsp;&nbsp;${menuList[i].name}</div>
             </div>
-            <div class="col-sm align-self-center">
-                <input type="number" id="price${i}" name="menus[${i}].totalPrice"  value="${menuList[i].price}" disabled>
+            <div class="col-sm align-self-center" id="priceDiv${i}">
+            <input type="hidden" id="priceV${i}" name="menus[${i}][totalPrice]" value="${menuList[i].price}">
+                <input type="number" id="price${i}" name="totalPrice"  value="${menuList[i].price}" disabled>
             </div>
-            <div class="col-sm input-group">
+            <div class="col-sm input-group" id="quantityDiv${i}">
+             <input type="hidden" id="quantityV${i}" name="menus[${i}][quantity]" value="1">
                     <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
                     onclick="subQuantity(${i})"
                     >-</button>
-                    <input type="number" id="quantity${i}"name="menus[${i}].quantity" class="form-control text-center" value="1" disabled>
+                    <input type="number" id="quantity${i}" name="menus[${i}].quantity" class="form-control text-center" value="1" disabled>
                     <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
                     onclick="addQuantity(${i})">+</button>
             </div>
@@ -138,21 +142,35 @@
     function addQuantity(i) {
         var quantity = parseInt(document.querySelector('#quantity'+i).value);
         quantity += 1;
-        document.querySelector('#quantity'+i).value = quantity;
         var price = menuList[i].price * quantity;
-        document.querySelector('#price'+i).value = price;
+        updateQuantity(i, quantity, price);
     }
 
     function subQuantity(i) {
         var quantity = parseInt(document.querySelector('#quantity'+i).value);
         quantity -= 1;
-        document.querySelector('#quantity'+i).value = quantity;
         var price = menuList[i].price * quantity;
-        document.querySelector('#price'+i).value = price;
+        updateQuantity(i, quantity, price);
         if(quantity <= 0){
         removeHtml(i);
         }
     }
+
+    function updateQuantity(i, quantity, price){
+        document.querySelector('#quantityDiv'+i).innerHTML = `
+           <input type="hidden" id="quantityV${i}" name="menus[${i}][quantity]" value="${quantity}">
+                    <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
+                    onclick="subQuantity(${i})"
+                    >-</button>
+                    <input type="number" id="quantity${i}" name="menus[${i}].quantity" class="form-control text-center" value= "${quantity}" disabled>
+                    <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
+                    onclick="addQuantity(${i})">+</button>
+            `;
+        document.querySelector('#priceDiv'+i).innerHTML = `
+                    <input type="hidden" id="priceV${i}" name="menus[${i}][totalPrice]" value="${price}">
+                <input type="number" id="price${i}" name="totalPrice"  value="${price}" disabled>
+                 `;
+        }
 
         function removeHtml(i) {
         if(menuMap.has(i)){
@@ -161,6 +179,22 @@
         document.querySelector('#menuLi'+i).remove();
     }
 
+function onSubmit() {
+              var formData = $('#menuForm').serializeObject();
+              console.log(formData);
+              $.ajax({
+                  url : `/store-main`,
+                  type : 'post',
+                  contentType: "application/json; charset=UTF-8",
+                  data : JSON.stringify(formData.menus),
+                  success : function () {
+                      console.log("success");
+                  },
+                  error : function (request, status, error) {
+                      console.log(error);
+                  }
+              })
+         }
 </script>
 
 <th:block th:include="common/include-script"></th:block>
