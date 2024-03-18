@@ -29,33 +29,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>허니콤보</td>
-            <td>22,000</td>
-            <td style="text-align: right">
-                <button type="button" th:onclick="|location.href='@{/stores/menus/update}'|" class="btn btn-success">수 정</button>
-                <button type="button" class="btn btn-danger">삭 제</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>레드콤보</td>
-            <td>22,000</td>
-            <td style="text-align: right">
-                <button type="button" th:onclick="|location.href='@{/stores/menus/update}'|" class="btn btn-success">수 정</button>
-                <button type="button" class="btn btn-danger">삭 제</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>허니 오리지널</td>
-            <td>20,000</td>
-            <td style="text-align: right">
-                <button type="button" th:onclick="|location.href='@{/stores/menus/update}'|" class="btn btn-success">수 정</button>
-                <button type="button" class="btn btn-danger">삭 제</button>
-            </td>
-        </tr>
+            <tr th:each="menu : ${menus}">
+                <th scope="row"><img th:src="${menu.imageUrl}"></th>
+                <td th:text="${menu.name}">허니콤보</td>
+                <td th:text="${menu.price}">22,000</td>
+                <td style="text-align: right">
+                    <button type="button" th:onclick="|location.href='@{/stores/menus/update}'|" class="btn btn-success">수 정</button>
+                    <button type="button" class="btn btn-danger">삭 제</button>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

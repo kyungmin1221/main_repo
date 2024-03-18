@@ -40,6 +40,9 @@ public class Store {
     private User user;
 
     @OneToMany(mappedBy = "store")
+    private List<Menu> menus = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store")
     private List<Like> likes = new ArrayList<>();
 
     @Builder
