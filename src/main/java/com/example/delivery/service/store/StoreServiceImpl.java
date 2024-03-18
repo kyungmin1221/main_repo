@@ -4,6 +4,8 @@ import com.example.delivery.aws.S3Uploader;
 import com.example.delivery.domain.Store;
 import com.example.delivery.domain.User;
 import com.example.delivery.dto.StoreDto;
+import com.example.delivery.exception.CustomException;
+import com.example.delivery.exception.ErrorCode;
 import com.example.delivery.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,5 +63,10 @@ public class StoreServiceImpl implements StoreService {
                     .build();
         }
         return null;
+    }
+
+    public Store findStoreId(Integer storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_STORE));
     }
 }

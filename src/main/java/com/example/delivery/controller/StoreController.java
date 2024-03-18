@@ -21,7 +21,7 @@ import java.io.IOException;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/stores")
-public class StoreController {
+public class   StoreController {
 
     private final StoreService storeService;
 
