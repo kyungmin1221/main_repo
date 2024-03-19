@@ -81,6 +81,7 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="/js/basic.js"></script>
     <title>푸드리움</title>
+    <script src="/js/auth.js"></script>
 </head>
 <body>
 <div class="header" style="position:relative;">
@@ -89,7 +90,7 @@
             <span th:text="${email}"></span> 님의
         </div>
         <div id="header-title-select-shop">
-            Select Shop
+            FoodRium
         </div>
         <a id="login-text" href="javascript:logout()">
             로그아웃
@@ -97,7 +98,7 @@
     </div>
     <div id="login-false" >
         <div id="header-title-select-shop">
-            My Select Shop
+            FoodRium
         </div>
         <a id="sign-text" href="/api/user/signup">
             회원가입

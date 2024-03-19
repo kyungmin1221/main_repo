@@ -33,7 +33,7 @@ public class JwtUtil {
     // Token 식별자
     public static final String BEARER_PREFIX = "Bearer ";
     // 토큰 만료시간
-    private final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
+    private final long TOKEN_TIME = 24 * 60 * 60 * 1000L; // 60분
 
     @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
     private String secretKey;
@@ -43,6 +43,8 @@ public class JwtUtil {
     // 로그 설정
     public static final Logger logger = LoggerFactory.getLogger("JWT 관련 로그");
 
+
+    // 생성자가 만들어진다음에 불림
     @PostConstruct
     public void init() {
         byte[] bytes = Base64.getDecoder().decode(secretKey);
@@ -54,10 +56,11 @@ public class JwtUtil {
     public String createToken(String username, Role role) {
         Date date = new Date();
 
+        // 토큰 생성
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(username) // 사용자 식별자값(ID)
-                        .claim(AUTHORIZATION_KEY, role) // 사용자 권한
+                        .claim(AUTHORIZATION_KEY, role) // 사용자 권한(key-value) - 권한을 가져오고싶으면 여기서 키값꺼내서 가져올 수 있음
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간
                         .setIssuedAt(date) // 발급일
                         .signWith(key, signatureAlgorithm) // 암호화 알고리즘
@@ -79,18 +82,19 @@ public class JwtUtil {
             logger.error(e.getMessage());
         }
     }
-    // 쿠키에 들어있던 jwt 토큰을 substring
+    // 쿠키에 들어있던 jwt 토큰을 substring - 앞에 Barear 붙여서(공백안되기때문에 공백 붙이는 메서드 필요)
     public String substringToken(String tokenValue) {
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
             return tokenValue.substring(7);
         }
-        logger.error("Not Found Token");
-        throw new NullPointerException("Not Found Token");
+        logger.error("토큰을 찾을 수 없습니다.");
+        throw new NullPointerException("토큰을 찾을 수 없습니다.");
     }
 
     // jwt 검증
     public boolean validateToken(String token) {
         try {
+            // token 위변조 검증 코드
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException | io.jsonwebtoken.security.SignatureException e) {
@@ -126,4 +130,3 @@ public class JwtUtil {
         return null;
     }
 }
-
