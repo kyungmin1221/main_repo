@@ -2,6 +2,7 @@ package com.example.delivery.controller;
 
 import com.example.delivery.dto.StoreDto;
 import com.example.delivery.security.UserDetailsImpl;
+import com.example.delivery.service.order.OrderService;
 import com.example.delivery.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,10 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -25,6 +23,7 @@ import java.util.List;
 public class   StoreController {
 
     private final StoreService storeService;
+    private final OrderService orderService;
 
     // 음식점 정보 마이페이지
     @GetMapping
@@ -89,13 +88,15 @@ public class   StoreController {
 
     // 실시간 주문 현황 페이지
     @GetMapping("/orders")
-    public String orderStatusPage() {
+    public String orderStatusPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("orders", orderService.getOrdersByUserId(userDetails.getUsername()));
         return "store/order/order-list";
     }
 
     // 실시간 주문 현황 페이지 > 주문 내역 보기
     @GetMapping("/orders/{orderId}")
-    public String orderDetail() {
+    public String orderDetail(Model model, @PathVariable Long orderId) {
+        model.addAttribute("order", orderService.getOrder(orderId));
         return "store/order/order-detail";
     }
 

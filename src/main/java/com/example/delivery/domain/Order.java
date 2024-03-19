@@ -1,14 +1,16 @@
 package com.example.delivery.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders")
-public class Order {
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
+public class Order extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
@@ -21,9 +23,20 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-//    @ManyToOne
-//    @JoinColumn(name = "store_id")
-//    @Column(nullable = false)
-//    private Store store;
+    @ManyToOne
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
 
+    @OneToMany(mappedBy = "order")
+    private List<OrderMenu> orderMenus;
+
+    @Builder
+    public Order(User user, Store store , boolean isArrived) {
+        this.user = user;
+        this.store = store;
+        this.isArrived = isArrived;
+    }
+    public void updateIsArrived(boolean isArrived){
+        this.isArrived = isArrived;
+    }
 }
