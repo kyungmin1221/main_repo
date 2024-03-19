@@ -110,8 +110,25 @@ public class StoreServiceImpl implements StoreService {
         return responseMenus;
     }
 
+    @Override
+    public StoreDto.InfoResponse getStoreInfo(Integer storeId) {
+        Store store = findStoreId(storeId);
+        return StoreDto.InfoResponse.builder()
+                .name(store.getName())
+                .workTime(store.getWorkTime())
+                .category(store.getCategory())
+                .address(store.getAddress())
+                .storeScore(store.getStoreScore())
+                .likeCount(store.getLikeCount())
+                .totalSales(store.getTotalSales())
+                .imageUrl(store.getImageUrl())
+                .build();
+    }
+
+    @Override
     public Store findStoreId(Integer storeId) {
         return storeRepository.findById(storeId)
-                .orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_STORE));
+                .orElseThrow(() -> new NoSuchElementException("음식점이 존재하지 않습니다."));
     }
+
 }

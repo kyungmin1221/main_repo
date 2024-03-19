@@ -1,23 +1,27 @@
 package com.example.delivery.controller.api;
 
-import com.example.delivery.dto.OrderDto;
+import com.example.delivery.dto.MenuDto;
 import com.example.delivery.dto.OrderMenuDto;
+import com.example.delivery.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class MenuController {
+    private final StoreService storeService;
+
     @GetMapping("/stores/{storeId}/menu")
-    public ResponseEntity<List<OrderMenuDto.Menu> > emailCheck(@PathVariable Long storeId) {
-        List<OrderMenuDto.Menu> menus = new ArrayList<>();
-        for(int i = 0 ; i < 10 ; i++){
-            menus.add(new OrderMenuDto.Menu(1L, (long) i,"자장면",3000,"/img/logo2.png","옛날 자장면"));
-        }
-        return ResponseEntity.ok(menus);
+    public ResponseEntity<List<MenuDto.Get> > emailCheck( @PathVariable Integer storeId) {
+
+        return ResponseEntity.ok(storeService.findStoreId(storeId).getMenus().stream().map(MenuDto.Get::new)
+                .collect(Collectors.toList()));
     }
 }

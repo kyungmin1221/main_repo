@@ -24,8 +24,8 @@
             <img src="/img/logo2.png" alt="Store Logo" height="200" width="200">
         </div>
         <div class="col-6 align-self-center">
-            <h1>만리장성 ♥♡</h1>
-            <p><span style="color:#ffd43c">★</span> &nbsp&nbsp 4.5 </p>
+            <h1>[[${store.name}]]</h1>
+            <p><span style="color:#ffd43c">★</span> &nbsp&nbsp [[${store.storeScore}]] </p>
         </div>
         <div class="col-3">
         </div>
@@ -62,8 +62,10 @@
         window.onload = () => {
           findAllComment();
         }
+
         var menuList;
         var menuMap = new Map();
+
          function findAllComment() {
 
               $.ajax({
@@ -79,12 +81,12 @@
                       }
 
                       let menuCardHtml = '';
-                      response.forEach(row => {
+                      response.forEach((row, index) => {
                           menuCardHtml += `
-                          <a href='javascript:void(0);' onclick="addList(${row.menuId});" class="card-link" id=${row.menuId} >
+                          <a href='javascript:void(0);' onclick="addList(${index},${row.menuId});" class="card-link" id=${row.menuId} >
                             <div class="row g-0">
                                 <div style="height: 154px;" class="col-md-4">
-                                    <img style="height: 100%; width:100%; object-fit:cover;" src="${row.url}" class="img-fluid rounded-start">
+                                    <img style="height: 100%; width:100%; object-fit:cover;" src="${row.imageUrl}" class="img-fluid rounded-start">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body" style="background-color: #DDDDDD">
@@ -95,48 +97,47 @@
                             </div>
                           </a>
                           `;
-                      })
+                      });
+
                       document.querySelector('#menuCard').innerHTML = menuCardHtml;
                   },
                   error : function (request, status, error) {
                       console.log(error)
                   }
-              })
+              });
+              console.log(menuList);
          }
 
+    function addList(index, id) {
+        if(menuMap.has(index)) return;
+        menuMap.set(index,id);
+         var menuListHtml = document.querySelector('#menuList').innerHTML;
 
-    function addList(i) {
-    if(menuMap.has(i)) return;
+        menuListHtml += `
+            <li class="list-group-item d-flex justify-content-between align-items-start"  id="menuLi${index}">
+                <div class="col-sm align-self-center">
+                <input type="hidden" name="menus[${index}][menuId]" value="${id}">
 
-    menuMap.set(i,i);
-     var menuListHtml = document.querySelector('#menuList').innerHTML;
-
-    menuListHtml += `
-        <li class="list-group-item d-flex justify-content-between align-items-start"  id="menuLi${i}">
-            <div class="col-sm align-self-center">
-            <input type="hidden" name="menus[${i}][menuId]" value="${i}">
-
-
-                <div class="fw-bold"><button class="btn btn-danger" type="button" style="width: 35px"
-                    onclick="removeHtml(${i})">X</button>
-                    &nbsp;&nbsp;${menuList[i].name}</div>
-            </div>
-            <div class="col-sm align-self-center" id="priceDiv${i}">
-            <input type="hidden" id="priceV${i}" name="menus[${i}][totalPrice]" value="${menuList[i].price}">
-                <input type="number" id="price${i}" name="totalPrice"  value="${menuList[i].price}" disabled>
-            </div>
-            <div class="col-sm input-group" id="quantityDiv${i}">
-             <input type="hidden" id="quantityV${i}" name="menus[${i}][quantity]" value="1">
-                    <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
-                    onclick="subQuantity(${i})"
-                    >-</button>
-                    <input type="number" id="quantity${i}" name="menus[${i}].quantity" class="form-control text-center" value="1" disabled>
-                    <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
-                    onclick="addQuantity(${i})">+</button>
-            </div>
-        </li>
-        `;
-     document.querySelector('#menuList').innerHTML = menuListHtml;
+                    <div class="fw-bold"><button class="btn btn-danger" type="button" style="width: 35px"
+                        onclick="removeHtml(${index})">X</button>
+                        &nbsp;&nbsp;${menuList[index].name}</div>
+                </div>
+                <div class="col-sm align-self-center" id="priceDiv${index}">
+                <input type="hidden" id="priceV${index}" name="menus[${index}][totalPrice]" value="${menuList[index].price}">
+                    <input type="number" id="price${index}" name="totalPrice"  value="${menuList[index].price}" disabled>
+                </div>
+                <div class="col-sm input-group" id="quantityDiv${index}">
+                 <input type="hidden" id="quantityV${index}" name="menus[${index}][quantity]" value="1">
+                        <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
+                        onclick="subQuantity(${index})"
+                        >-</button>
+                        <input type="number" id="quantity${index}" name="menus[${index}].quantity" class="form-control text-center" value="1" disabled>
+                        <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
+                        onclick="addQuantity(${index})">+</button>
+                </div>
+            </li>
+            `;
+         document.querySelector('#menuList').innerHTML = menuListHtml;
     }
 
     function addQuantity(i) {
@@ -151,10 +152,9 @@
         quantity -= 1;
         var price = menuList[i].price * quantity;
         updateQuantity(i, quantity, price);
-        if(quantity <= 0){
-        removeHtml(i);
-        }
+        if(quantity <= 0) removeHtml(i);
     }
+
 
     function updateQuantity(i, quantity, price){
         document.querySelector('#quantityDiv'+i).innerHTML = `
@@ -167,34 +167,39 @@
                     onclick="addQuantity(${i})">+</button>
             `;
         document.querySelector('#priceDiv'+i).innerHTML = `
-                    <input type="hidden" id="priceV${i}" name="menus[${i}][totalPrice]" value="${price}">
+                <input type="hidden" id="priceV${i}" name="menus[${i}][totalPrice]" value="${price}">
                 <input type="number" id="price${i}" name="totalPrice"  value="${price}" disabled>
                  `;
-        }
+    }
 
-        function removeHtml(i) {
-        if(menuMap.has(i)){
-            menuMap.delete(i);
-        }
+    function removeHtml(i) {
+        if(menuMap.has(i)) menuMap.delete(i);
+
         document.querySelector('#menuLi'+i).remove();
     }
 
-function onSubmit() {
+    function getURLParams(idx) {
+            var str = window.location.href;
+            var res = str.split('/');
+            return res[idx];
+    }
+
+    function onSubmit() {
               var formData = $('#menuForm').serializeObject();
-              console.log(formData);
+
               $.ajax({
-                  url : `/store-main`,
+                  url : `/orders/stores/${getURLParams(5)}`,
                   type : 'post',
                   contentType: "application/json; charset=UTF-8",
                   data : JSON.stringify(formData.menus),
                   success : function () {
-                      console.log("success");
+                      location.href="/orders/success";
                   },
                   error : function (request, status, error) {
                       console.log(error);
                   }
-              })
-         }
+              });
+    }
 </script>
 
 <th:block th:include="common/include-script"></th:block>

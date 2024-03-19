@@ -1,19 +1,9 @@
 package com.example.delivery.dto;
 
+import com.example.delivery.domain.OrderMenu;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class OrderMenuDto {
-    @Getter
-    @AllArgsConstructor
-    public static class CreateRequest {
-        private Integer menuId;
-        private int quantity;
-        private int totalPrice;
-    }
-
     @Getter
     @AllArgsConstructor
     @ToString
@@ -29,10 +19,26 @@ public class OrderMenuDto {
     @Getter
     @AllArgsConstructor
     @ToString
-    public static class MenuReq {
-        private Long menuId;
+    public static class MenuRequest {
+        private Integer menuId;
         private int quantity;
         private int totalPrice;
+    }
+    @Getter
+    @AllArgsConstructor
+    @ToString
+    public static class Get{
+        private Long orderId;
+        private MenuDto.Get menu;
+        private int quantity;
+        private int totalPrice;
+        @Builder
+        public Get(OrderMenu orderMenu){
+            this.orderId = orderMenu.getId();
+            this.menu =  MenuDto.Get.builder().menu(orderMenu.getMenu()).build();
+            this.quantity = orderMenu.getQuantity();
+            this.totalPrice = orderMenu.getTotalPrice();
+        }
     }
 
 }

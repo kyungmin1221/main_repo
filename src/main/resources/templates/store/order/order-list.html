@@ -13,7 +13,7 @@
 <nav th:replace="common/header"></nav>
 <div class="container">
     <h1 class="m-5">
-        실시간 주문 관리
+        실시간 주문 현황
     </h1>
 
     <table class="table table-hover">
@@ -29,31 +29,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>김상윤</td>
+        <tr th:each="order : ${orders}">
+            <th scope="row">[[${order.orderId}]]</th>
+            <td>[[${order.user.nickname}]]</td>
             <td>010-1234-1234</td>
             <td>서울시 강북구 수유동</td>
-            <td><a th:href="@{/stores/orders/1}">주문 내역 보기</a></td>
-            <td class="text-primary">배달 완료</td>
-            <td></td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>김상윤</td>
-            <td>010-1234-1234</td>
-            <td>서울시 강북구 수유동</td>
-            <td><a th:href="@{/stores/orders/2}">주문 내역 보기</a></td>
-            <td class="text-primary">배달 완료</td>
-            <td></td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>김상윤</td>
-            <td>010-1234-1234</td>
-            <td>서울시 강북구 수유동</td>
-            <td><a th:href="@{/stores/orders/3}">주문 내역 보기</a></td>
-            <td class="text-danger">배달중</td>
+
+            <td><a th:href="@{'/orders/' + ${order.orderId}}">주문 내역 보기</a></td>
+            <td class="text-danger" th:unless="${order.isArrived}">배달중</td>
+            <td class="text-Primary" th:if="${order.isArrived}">배달 완료</td>
             <td style="text-align: right">
                 <button type="button" class="btn btn-primary btn-sm">완료</button>
             </td>

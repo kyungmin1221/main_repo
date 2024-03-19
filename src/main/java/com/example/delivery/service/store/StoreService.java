@@ -18,4 +18,6 @@ public interface StoreService {
     void menuRegister(StoreDto.CreateMenuRequest requestDto, User user) throws IOException;
 
     List<StoreDto.MenuInfoResponse> getMenuInfo(User user);
+
+    StoreDto.InfoResponse getStoreInfo(Integer storeId);
 }
