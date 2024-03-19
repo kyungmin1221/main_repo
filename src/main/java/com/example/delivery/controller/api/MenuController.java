@@ -19,7 +19,7 @@ public class MenuController {
     private final StoreService storeService;
 
     @GetMapping("/stores/{storeId}/menu")
-    public ResponseEntity<List<MenuDto.Get> > emailCheck( @PathVariable Integer storeId) {
+    public ResponseEntity<List<MenuDto.Get>> emailCheck( @PathVariable Integer storeId) {
 
         return ResponseEntity.ok(storeService.findStoreId(storeId).getMenus().stream().map(MenuDto.Get::new)
                 .collect(Collectors.toList()));

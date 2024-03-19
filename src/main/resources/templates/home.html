@@ -8,8 +8,8 @@
     <meta name="author" content="" />
     <title>푸드리움</title>
     <th:block th:include="common/include-link"></th:block>
-    <style>
-        input {
+    <style >
+ input {
     background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
     background-position: 13px center;
     background-size: contain;
@@ -40,26 +40,15 @@ input:focus {
             <button type="submit" class="btn btn-outline-primary btn-sm">검색</button>
         </form>
     </div>
-    <!-- 반복문 사용해서 아래코드 만들기 -->
-<!--    <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">-->
-<!--        <div class="col">-->
-<!--            <a href="{{ url_for('show_place_details', content_id=item.content_id) }}" class="card-link">-->
-<!--                <div class="card h-100">-->
-<!--                    {% if item.image_url %}-->
-<!--                    <img src="{{ item.image_url }}" alt="{{ item.title }}" class="card-img-top" style="height: 200px;">-->
-<!--                    {% else %}-->
-<!--                    <img src="https://korean.visitseoul.net/data/POST/20170425//201704251508226961"-->
-<!--                         alt="{{ item.title }}" class="card-img-top" style="height: 200px;">-->
-
-<!--                    {% endif %}-->
-<!--                    <div class="card-body">-->
-<!--                        <h5 class="card-title" style="font-size: 18px;">{{ item.title }}</h5>-->
-<!--                        <p class="card-text" style="font-size: 15px;">{{ item.location }}</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </a>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div th:each="category : ${categories}">
+        <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
+            <div class="col">
+                <button type="button">
+                    <img src="/img/logo2.png" alt="대체 텍스트" onclick="alert('클릭!')" >
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 <th:block th:include="common/include-script"></th:block>
 </body>

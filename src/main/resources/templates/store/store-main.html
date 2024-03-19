@@ -35,7 +35,21 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-6" id="menuCard"></div>
+        <div class="col-6" id="menuCard" th:each="menu , menuStat : ${store.menus}">
+            <a href='javascript:void(0);' th:onclick="addList([[${menuStat.index}]],[[${menu.id}]],[[${menu.name}]],[[${menu.price}]]);" class="card-link" th:id= "${menuStat.index}" >
+                <div class="row g-0">
+                    <div style="height: 154px;" class="col-md-4">
+                        <img style="height: 100%; width:100%; object-fit:cover;" th:src="${menu.imageUrl}" class="img-fluid rounded-start">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body" style="background-color: #DDDDDD">
+                            <h5 class="card-title">[[${menu.name}]] - [[${menu.price}]] P</h5>
+                            <p class="card-text overflow-auto" style="height: 130px;">[[${menu.description}]]</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
         <div class="col-6" >
             <form action="/store-main" method="post" id="menuForm">
             <ol class="list-group" id="menuList">
@@ -58,57 +72,12 @@
         </div>
     </div>
 </div>
-<script>
-        window.onload = () => {
-          findAllComment();
-        }
+<script >
 
-        var menuList;
         var menuMap = new Map();
 
-         function findAllComment() {
+    function addList(index, id, name, price) {
 
-              $.ajax({
-                  url : `/stores/1/menu`,
-                  type : 'get',
-                  dataType : 'json',
-                  async : false,
-                  success : function (response) {
-                       menuList = response;
-                      if ( !response.length ) {
-                          document.querySelector('#menuCard').innerHTML = '<div><p>등록된 메뉴가 없습니다.</p></div>';
-                          return false;
-                      }
-
-                      let menuCardHtml = '';
-                      response.forEach((row, index) => {
-                          menuCardHtml += `
-                          <a href='javascript:void(0);' onclick="addList(${index},${row.menuId});" class="card-link" id=${row.menuId} >
-                            <div class="row g-0">
-                                <div style="height: 154px;" class="col-md-4">
-                                    <img style="height: 100%; width:100%; object-fit:cover;" src="${row.imageUrl}" class="img-fluid rounded-start">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body" style="background-color: #DDDDDD">
-                                        <h5 class="card-title">${row.name} - ${row.price} P</h5>
-                                        <p class="card-text overflow-auto" style="height: 130px;">${row.description}</p>
-                                    </div>
-                                </div>
-                            </div>
-                          </a>
-                          `;
-                      });
-
-                      document.querySelector('#menuCard').innerHTML = menuCardHtml;
-                  },
-                  error : function (request, status, error) {
-                      console.log(error)
-                  }
-              });
-              console.log(menuList);
-         }
-
-    function addList(index, id) {
         if(menuMap.has(index)) return;
         menuMap.set(index,id);
          var menuListHtml = document.querySelector('#menuList').innerHTML;
@@ -120,37 +89,37 @@
 
                     <div class="fw-bold"><button class="btn btn-danger" type="button" style="width: 35px"
                         onclick="removeHtml(${index})">X</button>
-                        &nbsp;&nbsp;${menuList[index].name}</div>
+                        &nbsp;&nbsp;${name}</div>
                 </div>
                 <div class="col-sm align-self-center" id="priceDiv${index}">
-                <input type="hidden" id="priceV${index}" name="menus[${index}][totalPrice]" value="${menuList[index].price}">
-                    <input type="number" id="price${index}" name="totalPrice"  value="${menuList[index].price}" disabled>
+                <input type="hidden" id="priceV${index}" name="menus[${index}][totalPrice]" value="${price}">
+                    <input type="number" id="price${index}" name="totalPrice"  value="${price}" disabled>
                 </div>
                 <div class="col-sm input-group" id="quantityDiv${index}">
                  <input type="hidden" id="quantityV${index}" name="menus[${index}][quantity]" value="1">
                         <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
-                        onclick="subQuantity(${index})"
+                        onclick="subQuantity(${index},${price})"
                         >-</button>
                         <input type="number" id="quantity${index}" name="menus[${index}].quantity" class="form-control text-center" value="1" disabled>
                         <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
-                        onclick="addQuantity(${index})">+</button>
+                        onclick="addQuantity(${index},${price})">+</button>
                 </div>
             </li>
             `;
          document.querySelector('#menuList').innerHTML = menuListHtml;
     }
 
-    function addQuantity(i) {
+    function addQuantity(i, menu_price) {
         var quantity = parseInt(document.querySelector('#quantity'+i).value);
         quantity += 1;
-        var price = menuList[i].price * quantity;
+        var price = menu_price * quantity;
         updateQuantity(i, quantity, price);
     }
 
-    function subQuantity(i) {
+    function subQuantity(i, menu_price) {
         var quantity = parseInt(document.querySelector('#quantity'+i).value);
         quantity -= 1;
-        var price = menuList[i].price * quantity;
+        var price = menu_price * quantity;
         updateQuantity(i, quantity, price);
         if(quantity <= 0) removeHtml(i);
     }
@@ -160,11 +129,11 @@
         document.querySelector('#quantityDiv'+i).innerHTML = `
            <input type="hidden" id="quantityV${i}" name="menus[${i}][quantity]" value="${quantity}">
                     <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
-                    onclick="subQuantity(${i})"
+                    onclick="subQuantity(${i},${price})"
                     >-</button>
                     <input type="number" id="quantity${i}" name="menus[${i}].quantity" class="form-control text-center" value= "${quantity}" disabled>
                     <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
-                    onclick="addQuantity(${i})">+</button>
+                    onclick="addQuantity(${i},${price})">+</button>
             `;
         document.querySelector('#priceDiv'+i).innerHTML = `
                 <input type="hidden" id="priceV${i}" name="menus[${i}][totalPrice]" value="${price}">
@@ -200,6 +169,7 @@
                   }
               });
     }
+
 </script>
 
 <th:block th:include="common/include-script"></th:block>
