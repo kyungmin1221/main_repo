@@ -1,6 +1,9 @@
 package com.example.delivery.controller;
 
+import com.example.delivery.domain.Menu;
+import com.example.delivery.domain.Store;
 import com.example.delivery.dto.OrderMenuDto;
+import com.example.delivery.dto.StoreDto;
 import com.example.delivery.security.UserDetailsImpl;
 import com.example.delivery.service.order.OrderService;
 import com.example.delivery.service.store.StoreService;
@@ -19,8 +22,11 @@ public class OrderController {
     private final OrderService orderService;
     private final StoreService storeService;
     @GetMapping("/orders/stores/{storeId}")
-    public String registerStoreForm(Model model, @PathVariable Integer storeId) {
-        model.addAttribute("store", storeService.findStoreId(storeId));
+    public String registerStoreForm(Model model, @PathVariable Integer storeId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Store store = storeService.findStoreId(storeId);
+        List<StoreDto.MenuInfoResponse> menus = storeService.getMenuInfo(userDetails.getUser());
+        model.addAttribute("menus", menus);
+        model.addAttribute("store", store);
         return "store/store-main";
     }
 

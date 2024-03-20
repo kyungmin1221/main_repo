@@ -3,6 +3,7 @@ package com.example.delivery.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class Order extends Timestamped {
     private Store store;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderMenu> orderMenus;
+    private List<OrderMenu> orderMenus = new ArrayList<>();
 
     @Builder
     public Order(User user, Store store , boolean isArrived) {

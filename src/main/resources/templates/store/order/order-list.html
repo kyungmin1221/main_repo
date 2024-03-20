@@ -21,8 +21,6 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">고객명</th>
-            <th scope="col">연락처</th>
-            <th scope="col">배달 주소</th>
             <th scope="col">주문 내역</th>
             <th scope="col">배달 상태</th>
             <th scope="col" style="text-align: right">배달 완료처리</th>
@@ -32,10 +30,8 @@
         <tr th:each="order : ${orders}">
             <th scope="row">[[${order.orderId}]]</th>
             <td>[[${order.user.nickname}]]</td>
-            <td>010-1234-1234</td>
-            <td>서울시 강북구 수유동</td>
 
-            <td><a th:href="@{'/orders/' + ${order.orderId}}">주문 내역 보기</a></td>
+            <td><a th:href="@{'/stores/orders/' + ${order.orderId}}">주문 내역 보기</a></td>
             <td class="text-danger" th:unless="${order.isArrived}">배달중</td>
             <td class="text-Primary" th:if="${order.isArrived}">배달 완료</td>
             <td style="text-align: right">
