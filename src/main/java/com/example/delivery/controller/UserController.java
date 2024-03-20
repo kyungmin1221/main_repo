@@ -68,4 +68,9 @@ public class UserController {
 
         return "home";
     }
+
+    @GetMapping("/user/mypage")
+    public String showMyPage() {
+        return "user-mypage";
+    }
 }

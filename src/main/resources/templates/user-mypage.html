@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>푸드리움</title>
+    <th:block th:include="common/include-link"></th:block>
+<!--    <script>-->
+<!--        document.addEventListener('DOMContentLoaded', function() {-->
+<!--          const token = getToken(); // auth.js 내에 정의된 getToken 함수 사용-->
+<!--    -->
+<!--          if (token) {-->
+<!--            fetch('/', {-->
+<!--              method: 'GET',-->
+<!--              credentials: 'include',-->
+<!--              headers: {-->
+<!--                'Authorization': token-->
+<!--              }-->
+<!--            })-->
+<!--                    .then(response => {-->
+<!--                      if (!response.ok) {-->
+<!--                        throw new Error('Network response was not ok');-->
+<!--                      }-->
+<!--                      return response.json();-->
+<!--                    })-->
+<!--                    .then(data => {-->
+<!--                      console.log(data);-->
+<!--                      // 데이터 처리 로직-->
+<!--                    })-->
+<!--                    .catch(error => {-->
+<!--                      console.error('Fetch error:', error);-->
+<!--                    });-->
+<!--          } else {-->
+<!--            console.error('No token found');-->
+<!--          }-->
+<!--        });-->
+<!--    </script>-->
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="common/header"></nav>
+<div>
+    <a class="nav-link" href="/stores">음식점 관리 (사장님)</a>
+</div>
+<th:block th:include="common/include-script"></th:block>
+</body>
+</html>
