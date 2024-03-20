@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +64,7 @@ public class StoreServiceImpl implements StoreService {
                     .category(store.getCategory())
                     .address(store.getAddress())
                     .storeScore(store.getStoreScore())
-                    .likeCount(store.getLikeCount())
+                    //.likeCount(store.getLikeCount())
                     .totalSales(store.getTotalSales())
                     .imageUrl(store.getImageUrl())
                     .build();
@@ -120,16 +121,43 @@ public class StoreServiceImpl implements StoreService {
                 .category(store.getCategory())
                 .address(store.getAddress())
                 .storeScore(store.getStoreScore())
-                .likeCount(store.getLikeCount())
+                //.likeCount(store.getLikeCount())
                 .totalSales(store.getTotalSales())
                 .imageUrl(store.getImageUrl())
                 .build();
+    }
+
+    // 음식점 조회를 위한 리스트 반환 (“사장님” 및 “고객님”은 키워드 기반으로 음식점을 검색하여 볼 수 있어야 합니다)
+    public List<StoreDto.InfoResponse> searchStoreList(String category) {
+        List<Store> stores = storeRepository.findByCategory(category);
+
+        return stores.stream()
+                .map(this::convertToStoreDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Store findStoreId(Integer storeId) {
         return storeRepository.findById(storeId)
                 .orElseThrow(() -> new NoSuchElementException("음식점이 존재하지 않습니다."));
+    }
+
+    public StoreDto.InfoResponse convertToStoreDto(Store store) {
+        if(store == null) {
+            return null;
+        }
+        StoreDto.InfoResponse infoResponse = new StoreDto.InfoResponse();
+        infoResponse.setName(store.getName());
+        infoResponse.setWorkTime(store.getWorkTime());
+        infoResponse.setCategory(store.getCategory());
+        infoResponse.setAddress(store.getAddress());
+        infoResponse.setStoreScore(store.getStoreScore());
+        infoResponse.setTotalSales(store.getTotalSales());
+        infoResponse.setImageUrl(store.getImageUrl());
+
+        return infoResponse;
+
+
     }
 
 }
