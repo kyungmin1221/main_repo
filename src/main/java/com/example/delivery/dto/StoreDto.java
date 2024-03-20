@@ -46,6 +46,7 @@ public class StoreDto {
     @Getter
     @Builder
     public static class MenuInfoResponse {
+        private final Integer id;
         private final String name;
         private final int price;
         private final String description;

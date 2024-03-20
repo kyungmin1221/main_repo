@@ -35,7 +35,7 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-6" id="menuCard" th:each="menu , menuStat : ${store.menus}">
+        <div class="col-6" id="menuCard" th:each="menu, menuStat : ${menus}">
             <a href='javascript:void(0);' th:onclick="addList([[${menuStat.index}]],[[${menu.id}]],[[${menu.name}]],[[${menu.price}]]);" class="card-link" th:id= "${menuStat.index}" >
                 <div class="row g-0">
                     <div style="height: 154px;" class="col-md-4">

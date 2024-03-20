@@ -1,27 +1,33 @@
 package com.example.delivery.service.order;
 
 import com.example.delivery.domain.Order;
+import com.example.delivery.domain.OrderMenu;
+import com.example.delivery.domain.Store;
+import com.example.delivery.domain.User;
 import com.example.delivery.dto.OrderDto;
 import com.example.delivery.dto.OrderMenuDto;
 import com.example.delivery.repository.OrderRepository;
+import com.example.delivery.repository.StoreRepository;
 import com.example.delivery.service.ordermenu.OrderMenuService;
 import com.example.delivery.service.store.StoreService;
 import com.example.delivery.service.user.UserService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class OrderServiceImpl implements OrderService {
     private final UserService userService;
     private final StoreService storeService;
     private final OrderMenuService orderMenuService;
     private final OrderRepository orderRepository;
+    private final StoreRepository storeRepository;
 
     @Override
     @Transactional
@@ -40,13 +46,34 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto.Get getOrder(Long orderId) {
-        return OrderDto.Get.builder().order(findById(orderId)).build();
+    public List<OrderDto.DetailResponse> getOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NoSuchElementException("주문이 존재하지 않습니다"));
+
+        List<OrderDto.DetailResponse> menuDetails = new ArrayList<>();
+        List<OrderMenu> orderMenus = order.getOrderMenus();
+        for (OrderMenu orderMenu : orderMenus) {
+            menuDetails.add(
+                    OrderDto.DetailResponse.builder()
+                            .name(orderMenu.getMenu().getName())
+                            .quantity(orderMenu.getQuantity())
+                            .totalPrice(orderMenu.getTotalPrice())
+                            .build()
+            );
+        }
+
+        return menuDetails;
     }
 
     @Override
-    public List<OrderDto.Get> getOrdersByUserId(String email) {
-        return orderRepository.findAllByUserId(userService.findUserByEmail(email).getId()).stream().map(OrderDto.Get::new).collect(Collectors.toList());
+    public List<OrderDto.StatusResponse> getOrdersByUserId(User user) {
+        Store store = storeRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new NoSuchElementException("가게가 존재하지 않습니다."));
+
+        return orderRepository.findAllByStoreId(store.getId())
+                .stream()
+                .map(OrderDto.StatusResponse::new)
+                .toList();
     }
 
     @Override

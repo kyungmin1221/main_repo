@@ -99,6 +99,7 @@ public class StoreServiceImpl implements StoreService {
         ArrayList<StoreDto.MenuInfoResponse> responseMenus = new ArrayList<>();
         for (Menu findMenu : findMenus) {
             StoreDto.MenuInfoResponse menu = StoreDto.MenuInfoResponse.builder()
+                    .id(findMenu.getId())
                     .name(findMenu.getName())
                     .price(findMenu.getPrice())
                     .description(findMenu.getDescription())

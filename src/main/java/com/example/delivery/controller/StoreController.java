@@ -1,5 +1,6 @@
 package com.example.delivery.controller;
 
+import com.example.delivery.dto.OrderDto;
 import com.example.delivery.dto.StoreDto;
 import com.example.delivery.security.UserDetailsImpl;
 import com.example.delivery.service.order.OrderService;
@@ -11,7 +12,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -89,14 +89,16 @@ public class   StoreController {
     // 실시간 주문 현황 페이지
     @GetMapping("/orders")
     public String orderStatusPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        model.addAttribute("orders", orderService.getOrdersByUserId(userDetails.getUsername()));
+        List<OrderDto.StatusResponse> ordersByUserId = orderService.getOrdersByUserId(userDetails.getUser());
+        System.out.println(ordersByUserId);
+        model.addAttribute("orders", ordersByUserId);
         return "store/order/order-list";
     }
 
     // 실시간 주문 현황 페이지 > 주문 내역 보기
     @GetMapping("/orders/{orderId}")
     public String orderDetail(Model model, @PathVariable Long orderId) {
-        model.addAttribute("order", orderService.getOrder(orderId));
+        model.addAttribute("orderDetails", orderService.getOrder(orderId));
         return "store/order/order-detail";
     }
 
