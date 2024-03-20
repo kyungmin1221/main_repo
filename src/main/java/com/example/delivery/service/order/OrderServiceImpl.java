@@ -79,7 +79,18 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void updateArrived(Long orderId) {
-        findById(orderId).updateIsArrived(true);
+        Order findOrder = findById(orderId);
+        findOrder.updateIsArrived(true); // 배달 완료 처리
+
+        // 총 주문 금액 음식점 매출에 더해줌
+        List<OrderMenu> orderMenus = findOrder.getOrderMenus();
+        double orderTotalPrice = 0.0;
+        for (OrderMenu orderMenu : orderMenus) {
+            orderTotalPrice += orderMenu.getTotalPrice();
+        }
+
+        Store store = findOrder.getStore();
+        store.plusSales(orderTotalPrice);
     }
 
     @Override

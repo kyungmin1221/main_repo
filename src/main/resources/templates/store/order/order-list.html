@@ -28,15 +28,18 @@
         </thead>
         <tbody>
         <tr th:each="order : ${orders}">
-            <th scope="row">[[${order.orderId}]]</th>
-            <td>[[${order.user.nickname}]]</td>
+            <form th:action="@{'/orders/' + ${order.orderId} + '/arrived'}" method="post">
+                <input type="hidden" th:value="${order.orderId}">
+                <th scope="row">[[${order.orderId}]]</th>
+                <td>[[${order.user.nickname}]]</td>
 
-            <td><a th:href="@{'/stores/orders/' + ${order.orderId}}">주문 내역 보기</a></td>
-            <td class="text-danger" th:unless="${order.isArrived}">배달중</td>
-            <td class="text-Primary" th:if="${order.isArrived}">배달 완료</td>
-            <td style="text-align: right">
-                <button type="button" class="btn btn-primary btn-sm">완료</button>
-            </td>
+                <td><a th:href="@{'/stores/orders/' + ${order.orderId}}">주문 내역 보기</a></td>
+                <td class="text-danger" th:unless="${order.isArrived}">배달중</td>
+                <td class="text-Primary" th:if="${order.isArrived}">배달 완료</td>
+                <td style="text-align: right">
+                    <button type="submit" th:unless="${order.isArrived}" class="btn btn-primary btn-sm">완료</button>
+                </td>
+            </form>
         </tr>
         </tbody>
     </table>

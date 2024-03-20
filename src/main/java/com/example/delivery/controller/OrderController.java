@@ -41,9 +41,9 @@ public class OrderController {
         return "store/order/order-success";
     }
 
-    @PutMapping("/orders/{orderId}/arrived")
+    @PostMapping("/orders/{orderId}/arrived")
     public String updateArrived(Model model, @PathVariable Long orderId) {
         orderService.updateArrived(orderId);
-        return "redirect:store/order/order-list";
+        return "redirect:/stores/orders";
     }
 }
