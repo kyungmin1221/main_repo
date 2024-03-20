@@ -89,6 +89,11 @@ public class OrderServiceImpl implements OrderService {
             orderTotalPrice += orderMenu.getTotalPrice();
         }
 
+        // 사장님 포인트 잔고에 더해줌
+        User user = findOrder.getUser();
+        user.plusPoint(orderTotalPrice);
+
+        // 음식점 총 매출에 더해줌
         Store store = findOrder.getStore();
         store.plusSales(orderTotalPrice);
     }
