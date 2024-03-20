@@ -58,4 +58,9 @@ public class Store {
         this.totalSales = totalSales;
         this.user = user;
     }
+
+    // 주문 완료 > 총 주문 금액을 매출에 더해주는 메서드
+    public void plusSales(double orderTotalPrice) {
+        this.totalSales += orderTotalPrice;
+    }
 }

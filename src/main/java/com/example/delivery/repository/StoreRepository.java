@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface StoreRepository extends JpaRepository<Store, Integer> {
 
     Optional<Store> findByUserId(Long id);
+
 }
