@@ -15,8 +15,6 @@
     <h1 class="m-5">
         주문 내역
     </h1>
-    <b><p style="text-align: right; color: blue" th:if="${order.isArrived}"> * 배달 현황 : 배달 완료 </p></b>
-    <b><p style="text-align: right; color: black" th:unless="${order.isArrived}"> * 배달 현황 : 배달 중 </p></b>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -27,15 +25,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="orderMenu : ${order.orderMenus}">
-            <th scope="row"><img th:src="${orderMenu.menu.imageUrl}"></th>
-            <td th:text="${orderMenu.menu.name}">[[${orderMenu.menu.name}]]</td>
-            <td th:text="${orderMenu.quantity}">[[${orderMenu.quantity]]</td>
-            <td th:text="${orderMenu.totalPrice}">[[${orderMenu.totalPrice}]]</td>
+        <tr th:each="orderDetail : ${orderDetails}">
+            <td>#</td>
+            <td th:text="${orderDetail.name}"></td>
+            <td th:text="${orderDetail.quantity}"></td>
+            <td th:text="${orderDetail.totalPrice}"></td>
         </tr>
         </tbody>
     </table>
-    <b><p style="text-align: right; color: red">총 주문 금액 : [[${order.totalPrice}]] 원</p></b>
 </div>
 <th:block th:include="common/include-script"></th:block>
 </body>
