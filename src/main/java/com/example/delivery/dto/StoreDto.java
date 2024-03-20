@@ -1,8 +1,6 @@
 package com.example.delivery.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 public class StoreDto {
@@ -20,6 +18,9 @@ public class StoreDto {
 
     // 음식점 정보 응답
     @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     public static class InfoResponse {
         private String name;
@@ -27,7 +28,7 @@ public class StoreDto {
         private String category;
         private String address;
         private float storeScore;
-        private int likeCount;
+        //private int likeCount;
         private double totalSales;
         private String imageUrl;
     }

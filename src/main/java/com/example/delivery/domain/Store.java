@@ -42,11 +42,11 @@ public class Store {
     @OneToMany(mappedBy = "store")
     private List<Menu> menus = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store")
-    private List<Like> likes = new ArrayList<>();
+//    @OneToMany(mappedBy = "store")
+//    private List<Like> likes = new ArrayList<>();
 
     @Builder
-    public Store(Integer id, String name, String workTime, String category, String address, String imageUrl, float storeScore, int likeCount, double totalSales, User user) {
+    public Store(Integer id, String name, String workTime, String category, String address, String imageUrl, float storeScore, double totalSales, User user) {
         this.id = id;
         this.name = name;
         this.workTime = workTime;
@@ -54,7 +54,7 @@ public class Store {
         this.address = address;
         this.imageUrl = imageUrl;
         this.storeScore = storeScore;
-        this.likeCount = likeCount;
+        //this.likeCount = likeCount;
         this.totalSales = totalSales;
         this.user = user;
     }
