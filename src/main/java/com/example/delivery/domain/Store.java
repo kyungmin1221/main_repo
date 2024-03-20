@@ -32,7 +32,7 @@ public class Store {
     private String imageUrl;
 
     private float storeScore;
-    private int likeCount;
+//    private int likeCount;
     private double totalSales;
 
     @OneToOne

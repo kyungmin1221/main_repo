@@ -31,7 +31,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void createOrder(List<OrderMenuDto.MenuRequest> requestDto, String email, Integer storeId) {
+    public boolean createOrder(List<OrderMenuDto.MenuRequest> requestDto, String email, Integer storeId) {
+        int totalPrice = 0;
+
+        for(OrderMenuDto.MenuRequest menuRequest : requestDto){
+            totalPrice += menuRequest.getTotalPrice();
+        }
+
+        if(userService.findUserByEmail(email).getPoint() < totalPrice)
+            return false;
 
         Order order = orderRepository.save(
                 Order.builder()
@@ -43,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
         for(OrderMenuDto.MenuRequest menuRequest : requestDto){
             orderMenuService.createOrderMenu(menuRequest, order);
         }
+        return true;
     }
 
     @Override
@@ -80,9 +89,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void updateArrived(Long orderId) {
         Order findOrder = findById(orderId);
-        findOrder.updateIsArrived(true); // 배달 완료 처리
+        findOrder.updateIsArrived(true);
 
-        // 총 주문 금액 음식점 매출에 더해줌
         List<OrderMenu> orderMenus = findOrder.getOrderMenus();
         double orderTotalPrice = 0.0;
         for (OrderMenu orderMenu : orderMenus) {
@@ -91,10 +99,15 @@ public class OrderServiceImpl implements OrderService {
 
         // 사장님 포인트 잔고에 더해줌
         User user = findOrder.getUser();
-        user.plusPoint(orderTotalPrice);
+        user.minusPoint(orderTotalPrice);
+
+        Store store = findOrder.getStore();
+
+        // 사장님 포인트 잔고에 더해줌
+        User ceo = store.getUser();
+        ceo.plusPoint(orderTotalPrice);
 
         // 음식점 총 매출에 더해줌
-        Store store = findOrder.getStore();
         store.plusSales(orderTotalPrice);
     }
 

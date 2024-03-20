@@ -8,7 +8,7 @@ import com.example.delivery.dto.OrderMenuDto;
 import java.util.List;
 
 public interface OrderService {
-    void createOrder(List<OrderMenuDto.MenuRequest> requestDto, String email, Integer storeId);
+    boolean createOrder(List<OrderMenuDto.MenuRequest> requestDto, String email, Integer storeId);
 
     List<OrderDto.DetailResponse> getOrder(Long orderId);
 

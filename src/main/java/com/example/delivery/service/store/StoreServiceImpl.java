@@ -113,6 +113,27 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public List<StoreDto.MenuInfoResponse> getMenuInfoByStoreId(Integer storeId) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new NoSuchElementException("음식점이 존재하지 않습니다."));
+        List<Menu> findMenus = store.getMenus();
+
+        ArrayList<StoreDto.MenuInfoResponse> responseMenus = new ArrayList<>();
+        for (Menu findMenu : findMenus) {
+            StoreDto.MenuInfoResponse menu = StoreDto.MenuInfoResponse.builder()
+                    .id(findMenu.getId())
+                    .name(findMenu.getName())
+                    .price(findMenu.getPrice())
+                    .description(findMenu.getDescription())
+                    .imageUrl(findMenu.getImageUrl())
+                    .build();
+            responseMenus.add(menu);
+        }
+
+        return responseMenus;
+    }
+
+    @Override
     public StoreDto.InfoResponse getStoreInfo(Integer storeId) {
         Store store = findStoreId(storeId);
         return StoreDto.InfoResponse.builder()
@@ -128,12 +149,12 @@ public class StoreServiceImpl implements StoreService {
     }
 
     // 음식점 조회를 위한 리스트 반환 (“사장님” 및 “고객님”은 키워드 기반으로 음식점을 검색하여 볼 수 있어야 합니다)
-    public List<StoreDto.InfoResponse> searchStoreList(String category) {
+    public List<StoreDto.SearchResponse> searchStoreList(String category) {
         List<Store> stores = storeRepository.findByCategory(category);
 
         return stores.stream()
                 .map(this::convertToStoreDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -142,22 +163,17 @@ public class StoreServiceImpl implements StoreService {
                 .orElseThrow(() -> new NoSuchElementException("음식점이 존재하지 않습니다."));
     }
 
-    public StoreDto.InfoResponse convertToStoreDto(Store store) {
+    public StoreDto.SearchResponse convertToStoreDto(Store store) {
         if(store == null) {
             return null;
         }
-        StoreDto.InfoResponse infoResponse = new StoreDto.InfoResponse();
-        infoResponse.setName(store.getName());
-        infoResponse.setWorkTime(store.getWorkTime());
-        infoResponse.setCategory(store.getCategory());
-        infoResponse.setAddress(store.getAddress());
-        infoResponse.setStoreScore(store.getStoreScore());
-        infoResponse.setTotalSales(store.getTotalSales());
-        infoResponse.setImageUrl(store.getImageUrl());
 
-        return infoResponse;
-
-
+        return StoreDto.SearchResponse.builder()
+                .storeId(store.getId())
+                .name(store.getName())
+                .storeScore(store.getStoreScore())
+                .workTime(store.getWorkTime())
+                .imageUrl(store.getImageUrl()).build();
     }
 
 }

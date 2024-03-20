@@ -19,5 +19,9 @@ public interface StoreService {
 
     List<StoreDto.MenuInfoResponse> getMenuInfo(User user);
 
+    List<StoreDto.MenuInfoResponse> getMenuInfoByStoreId(Integer storeId);
+
+    List<StoreDto.SearchResponse> searchStoreList(String category);
+
     StoreDto.InfoResponse getStoreInfo(Integer storeId);
 }
