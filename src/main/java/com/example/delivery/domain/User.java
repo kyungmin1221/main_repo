@@ -56,4 +56,9 @@ public class User {
         this.kakaoId = kakaoId;
         return this;
     }
+
+    // 사장님 - 음식점 배달 완료시 포인트 지급
+    public void plusPoint(double orderTotalPrice) {
+        this.point += (long) orderTotalPrice;
+    }
 }
