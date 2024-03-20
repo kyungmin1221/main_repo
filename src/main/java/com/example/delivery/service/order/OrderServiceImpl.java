@@ -12,6 +12,7 @@ import com.example.delivery.service.ordermenu.OrderMenuService;
 import com.example.delivery.service.store.StoreService;
 import com.example.delivery.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
 
+    private final SimpMessagingTemplate messagingTemplate;
+
     @Override
     @Transactional
     public boolean createOrder(List<OrderMenuDto.MenuRequest> requestDto, String email, Integer storeId) {
@@ -40,17 +43,21 @@ public class OrderServiceImpl implements OrderService {
 
         if(userService.findUserByEmail(email).getPoint() < totalPrice)
             return false;
-
+        Store findStore = storeService.findStoreId(storeId);
         Order order = orderRepository.save(
                 Order.builder()
                 .user(userService.findUserByEmail(email))
-                .store(storeService.findStoreId(storeId))
+                .store(findStore)
                 .isArrived(false)
                 .build());
 
         for(OrderMenuDto.MenuRequest menuRequest : requestDto){
             orderMenuService.createOrderMenu(menuRequest, order);
         }
+
+        // 사장님 에게 주문 알림 전송 - 웹 소켓
+        messagingTemplate.convertAndSendToUser(findStore.getUser().getEmail(), "/topic/orders", "새로운 주문이 들어왔습니다.");
+
         return true;
     }
 
@@ -109,6 +116,9 @@ public class OrderServiceImpl implements OrderService {
 
         // 음식점 총 매출에 더해줌
         store.plusSales(orderTotalPrice);
+
+        // 고객 에게 배달 완료 알림 전송 - 웹 소켓
+        messagingTemplate.convertAndSendToUser(user.getEmail(), "/topic/orders", "배달이 완료 됐습니다.");
     }
 
     @Override
