@@ -61,4 +61,8 @@ public class User {
     public void plusPoint(double orderTotalPrice) {
         this.point += (long) orderTotalPrice;
     }
+
+    public void minusPoint(double orderTotalPrice) {
+        this.point -= (long) orderTotalPrice;
+    }
 }

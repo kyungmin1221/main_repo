@@ -31,7 +31,7 @@
         </div>
     </div>
 </div>
-<div class="container" style="height: 80px">
+<div class="container" style="height: 80px" id="resultDiv">
 </div>
 <div class="container">
     <div class="row">
@@ -74,13 +74,14 @@
 </div>
 <script >
 
-        var menuMap = new Map();
+    var menuMap = new Map();
 
     function addList(index, id, name, price) {
 
         if(menuMap.has(index)) return;
         menuMap.set(index,id);
-         var menuListHtml = document.querySelector('#menuList').innerHTML;
+
+        var menuListHtml = document.querySelector('#menuList').innerHTML;
 
         menuListHtml += `
             <li class="list-group-item d-flex justify-content-between align-items-start"  id="menuLi${index}">
@@ -106,7 +107,7 @@
                 </div>
             </li>
             `;
-         document.querySelector('#menuList').innerHTML = menuListHtml;
+        document.querySelector('#menuList').innerHTML = menuListHtml;
     }
 
     function addQuantity(i, menu_price) {
@@ -165,8 +166,8 @@
                   type : 'post',
                   contentType: "application/json; charset=UTF-8",
                   data : JSON.stringify(formData.menus),
-                  success : function () {
-                      location.href="/orders/success";
+                  success : function (result) {
+                  document.querySelector('#resultDiv').innerHTML = result;
                   },
                   error : function (request, status, error) {
                       console.log(error);

@@ -35,31 +35,38 @@ input:focus {
 <div class="container px-4 py-5" id="custom-cards">
     <div class="container mt-4 mb-4 d-flex justify-content-center">
         <form action="#" method="post" class="d-flex align-items-center">
-            <input type="text" class="form-control me-2" name="search_title" placeholder=" 무슨 음식을 찾으시나요"
+            <input type="text" class="form-control me-2" id="searchKeyword" placeholder=" 무슨 음식을 찾으시나요"
                    style="width: 500px; display: inline-block;">
-            <button type="submit" class="btn btn-outline-primary btn-sm">검색</button>
+            <button type="button" class="btn btn-outline-primary btn-sm" onclick="search()">검색</button>
         </form>
     </div>
     <div class="container" style="height: 50px"></div>
     <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
         <div class="col">
             <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
-  height: 200px;">치킨</button>
+  height: 200px;" onclick="location.href='/stores/category/치킨'">치킨</button>
         </div>
         <div class="col">
             <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
-  height: 200px;">피자</button>
+  height: 200px;" onclick="location.href='/stores/category/피자'">피자</button>
         </div>
         <div class="col">
             <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
-  height: 200px;">족발</button>
+  height: 200px;" onclick="location.href='/stores/category/족발'">족발</button>
         </div>
         <div class="col">
             <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
-  height: 200px;">기타</button>
+  height: 200px;" onclick="location.href='/stores/category/기타'">기타</button>
         </div>
     </div>
 </div>
 <th:block th:include="common/include-script"></th:block>
 </body>
+<script>
+    var keyword = document.getElementById("#searchKeyword");
+
+    function search(){
+     location.href = "/stores/search/" + keyword;
+    }
+</script>
 </html>

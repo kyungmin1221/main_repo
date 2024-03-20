@@ -28,6 +28,9 @@ input:focus {
     text-indent: 0;
     width: 50%;
 }
+    a:link { color: black; text-decoration: none;}
+    a:visited { color: black; text-decoration: none;}
+    a:hover { color: black; text-decoration: none;}
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -41,24 +44,23 @@ input:focus {
         </form>
     </div>
     <div class="container" style="height: 50px"></div>
-    <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
         <div class="row">
-            <div class="col-6" id="storeCard" th:each="store , storeStat : ${stores}">
-                <a href='javascript:void(0);' th:onclick="addList([[${menuStat.index}]],[[${menu.id}]],[[${menu.name}]],[[${menu.price}]]);" class="card-link" th:id= "${storeStat.index}" >
+            <div id="storeCard" th:each="store , storeStat : ${stores}">
+                <a th:href="'/orders/stores/'+${store.storeId}" class="card-link" th:id= "${storeStat.index}" >
                     <div class="row g-0">
-                        <div style="height: 154px;" class="col-md-4">
+                        <div style="height: 154px;" class="col-md-2">
                             <img style="height: 100%; width:100%; object-fit:cover;" th:src="${store.imageUrl}" class="img-fluid rounded-start">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body" style="background-color: #DDDDDD">
-                                <h5 class="card-title">[[${store.name}]] - [[${store.score}]] P</h5>
-                                <p class="card-text overflow-auto" th:text="${store.description}"style="height: 130px;"></p>
+                                <h5 class="card-title">[[${store.name}]] - <span style="color:#ffd43c">★</span> [[${store.storeScore}]] </h5>
+                                <p class="card-text overflow-auto" th:text="${store.workTime}"style="height: 130px;"></p>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
-    </div>
+        </div>
 </div>
 <th:block th:include="common/include-script"></th:block>
 </body>

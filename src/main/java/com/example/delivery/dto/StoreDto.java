@@ -33,6 +33,20 @@ public class StoreDto {
         private String imageUrl;
     }
 
+    // 음식점 검색 결과
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class SearchResponse {
+        private Integer storeId;
+        private String name;
+        private float storeScore;
+        private String imageUrl;
+        private String workTime;
+    }
+
     // 음식점 메뉴 등록 요청
     @Getter
     @AllArgsConstructor

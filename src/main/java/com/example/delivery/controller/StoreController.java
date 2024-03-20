@@ -104,5 +104,9 @@ public class   StoreController {
 
 
     // 음식점 검색
-
+    @GetMapping("/category/{categoryName}")
+    public String searchByCategoryName(Model model, @PathVariable String categoryName) {
+        model.addAttribute("stores", storeService.searchStoreList(categoryName));
+        return "search-store";
+    }
 }

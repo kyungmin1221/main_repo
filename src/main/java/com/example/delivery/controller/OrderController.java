@@ -22,9 +22,9 @@ public class OrderController {
     private final OrderService orderService;
     private final StoreService storeService;
     @GetMapping("/orders/stores/{storeId}")
-    public String registerStoreForm(Model model, @PathVariable Integer storeId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Store store = storeService.findStoreId(storeId);
-        List<StoreDto.MenuInfoResponse> menus = storeService.getMenuInfo(userDetails.getUser());
+    public String registerStoreForm(Model model, @PathVariable Integer storeId) {
+        StoreDto.InfoResponse store = storeService.getStoreInfo(storeId);
+        List<StoreDto.MenuInfoResponse> menus = storeService.getMenuInfoByStoreId(storeId);
         model.addAttribute("menus", menus);
         model.addAttribute("store", store);
         return "store/store-main";
@@ -32,13 +32,10 @@ public class OrderController {
 
     @PostMapping("/orders/stores/{storeId}")
     public String createOrder(@RequestBody List<OrderMenuDto.MenuRequest> menus, @PathVariable Integer storeId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        orderService.createOrder(menus, userDetails.getUsername(), storeId);
-        return "store/order/order-success";
-    }
+        if (orderService.createOrder(menus, userDetails.getUsername(), storeId))
+            return "store/order/order-success";
 
-    @GetMapping("/orders/success")
-    public String getSuccessPage() {
-        return "store/order/order-success";
+        return "store/order/order-fail";
     }
 
     @PostMapping("/orders/{orderId}/arrived")
