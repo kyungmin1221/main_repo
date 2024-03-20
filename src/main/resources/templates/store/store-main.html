@@ -24,8 +24,8 @@
             <img src="/img/logo2.png" alt="Store Logo" height="200" width="200">
         </div>
         <div class="col-6 align-self-center">
-            <h1>[[${store.name}]]</h1>
-            <p><span style="color:#ffd43c">★</span> &nbsp&nbsp [[${store.storeScore}]] </p>
+            <h1 th:text="${store.name}" style="display:inline"></h1>
+            <p><span style="color:#ffd43c">★</span><span th:text="${store.storeScore}"></span></p>
         </div>
         <div class="col-3">
         </div>
@@ -44,7 +44,7 @@
                     <div class="col-md-8">
                         <div class="card-body" style="background-color: #DDDDDD">
                             <h5 class="card-title">[[${menu.name}]] - [[${menu.price}]] P</h5>
-                            <p class="card-text overflow-auto" style="height: 130px;">[[${menu.description}]]</p>
+                            <p class="card-text overflow-auto" style="height: 130px;" th:text="${menu.description}"></p>
                         </div>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                         <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
                         onclick="subQuantity(${index},${price})"
                         >-</button>
-                        <input type="number" id="quantity${index}" name="menus[${index}].quantity" class="form-control text-center" value="1" disabled>
+                        <input type="number" id="quantity${index}" class="form-control text-center" value="1" disabled>
                         <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
                         onclick="addQuantity(${index},${price})">+</button>
                 </div>
@@ -113,27 +113,27 @@
         var quantity = parseInt(document.querySelector('#quantity'+i).value);
         quantity += 1;
         var price = menu_price * quantity;
-        updateQuantity(i, quantity, price);
+        updateQuantity(i, quantity, price, menu_price);
     }
 
     function subQuantity(i, menu_price) {
         var quantity = parseInt(document.querySelector('#quantity'+i).value);
         quantity -= 1;
         var price = menu_price * quantity;
-        updateQuantity(i, quantity, price);
+        updateQuantity(i, quantity, price, menu_price);
         if(quantity <= 0) removeHtml(i);
     }
 
 
-    function updateQuantity(i, quantity, price){
+    function updateQuantity(i, quantity, price, menu_price){
         document.querySelector('#quantityDiv'+i).innerHTML = `
            <input type="hidden" id="quantityV${i}" name="menus[${i}][quantity]" value="${quantity}">
                     <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
-                    onclick="subQuantity(${i},${price})"
+                    onclick="subQuantity(${i},${menu_price})"
                     >-</button>
-                    <input type="number" id="quantity${i}" name="menus[${i}].quantity" class="form-control text-center" value= "${quantity}" disabled>
+                    <input type="number" id="quantity${i}" class="form-control text-center" value= "${quantity}" disabled>
                     <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
-                    onclick="addQuantity(${i},${price})">+</button>
+                    onclick="addQuantity(${i},${menu_price})">+</button>
             `;
         document.querySelector('#priceDiv'+i).innerHTML = `
                 <input type="hidden" id="priceV${i}" name="menus[${i}][totalPrice]" value="${price}">
@@ -154,6 +154,10 @@
     }
 
     function onSubmit() {
+              if (menuMap.size <= 0){
+              alert('최소 1개 이상 주문하셔야 합니다.');
+              return;
+              }
               var formData = $('#menuForm').serializeObject();
 
               $.ajax({
@@ -170,8 +174,8 @@
               });
     }
 
-</script>
 
+</script>
 <th:block th:include="common/include-script"></th:block>
 </body>
 </html>
