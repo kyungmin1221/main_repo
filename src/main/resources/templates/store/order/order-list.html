@@ -45,42 +45,5 @@
     </table>
 </div>
 <th:block th:include="common/include-script"></th:block>
-<script>
-    // id가 "orderCompleteBtn"인 모든 버튼 요소를 선택합니다.
-    var buttons = document.querySelectorAll("#orderCompleteBtn");
-
-    // 각 버튼에 대해 반복하여 클릭 이벤트를 설정합니다.
-    buttons.forEach(function(button) {
-        button.addEventListener("click", function() {
-            // 현재 클릭된 버튼의 data-order-id 값을 가져오기
-            var orderId = button.getAttribute("data-order-id");
-
-            // 요청을 보낼 URL 설정
-            var url = "/orders/" + orderId + "/arrived";
-
-            // fetch API를 사용하여 PUT 요청을 보냅니다.
-            fetch(url, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                // 요청 본문은 비어있어도 됩니다.
-                body: JSON.stringify({})
-            })
-                .then(function(response) {
-                    if (!response.ok) {
-                        throw new Error("서버 응답 오류");
-                    }
-                    // 요청이 성공적으로 응답 받은 경우
-                    // 페이지를 새로고침합니다.
-                    window.location.reload();
-                })
-                .catch(function(error) {
-                    // 요청이 실패한 경우
-                    console.error("오류 발생:", error);
-                });
-        });
-    });
-</script>
 </body>
 </html>
