@@ -3,6 +3,7 @@ package com.example.delivery.controller;
 import com.example.delivery.dto.UserRegisterDto;
 import com.example.delivery.exception.CustomException;
 import com.example.delivery.jwt.JwtUtil;
+import com.example.delivery.security.UserDetailsImpl;
 import com.example.delivery.service.KakaoService;
 import com.example.delivery.service.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -70,7 +72,8 @@ public class UserController {
     }
 
     @GetMapping("/user/mypage")
-    public String showMyPage() {
+    public String showMyPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("user", userDetails.getUser());
         return "user-mypage";
     }
 }

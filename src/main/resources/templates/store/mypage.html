@@ -59,7 +59,7 @@
           <p class="card-text">상호명 : <span th:text="${storeInfo.name}"></span></p>
           <p class="card-text">주소 : <span th:text="${storeInfo.address}"></span></p>
           <p class="card-text">운영 시간 : <span th:text="${storeInfo.workTime}"></span></p>
-          <p class="card-text">보유 포인트 : <span th:text="${storeInfo.totalSales}"></span></p>
+          <p class="card-text">총 매출 : <span th:text="${storeInfo.totalSales}"></span></p>
 
         </div>
         <button type="button" th:onclick="|location.href='@{/stores/register}'|" class="btn btn-primary mb-3">정보 등록</button>
