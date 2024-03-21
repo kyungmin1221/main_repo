@@ -1,5 +1,6 @@
 package com.example.delivery.controller;
 
+import com.example.delivery.dto.UserDto;
 import com.example.delivery.dto.UserRegisterDto;
 import com.example.delivery.exception.CustomException;
 import com.example.delivery.jwt.JwtUtil;
@@ -73,7 +74,8 @@ public class UserController {
 
     @GetMapping("/user/mypage")
     public String showMyPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        model.addAttribute("user", userDetails.getUser());
+        UserDto userDto = userService.getUserInfo(userDetails.getUser().getId());
+        model.addAttribute("userDto", userDto);
         return "user-mypage";
     }
 }
