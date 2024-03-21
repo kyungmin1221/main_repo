@@ -42,7 +42,7 @@
 <body class="sb-nav-fixed">
 <nav th:replace="common/header"></nav>
 <div>
-    <a class="nav-link" href="/stores">음식점 관리 (사장님)</a>
+    <a th:if="${user.role.getAuthority() == 'ROLE_CEO'}" class="nav-link" href="/stores">음식점 관리 (사장님)</a>
 </div>
 <th:block th:include="common/include-script"></th:block>
 </body>
