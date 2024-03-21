@@ -3,6 +3,7 @@ package com.example.delivery.service.user;
 
 import com.example.delivery.constant.Role;
 import com.example.delivery.domain.User;
+import com.example.delivery.dto.UserDto;
 import com.example.delivery.dto.UserRegisterDto;
 import com.example.delivery.exception.CustomException;
 import com.example.delivery.exception.ErrorCode;
@@ -68,6 +69,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return new UserRegisterDto.UserRegisterResponseDto(user);
+    }
+
+    @Override
+    public UserDto getUserInfo(Long userId) {
+        User user = findUserId(userId);
+        return UserDto.builder()
+                .user(user)
+                .build();
     }
 
     public User findUserId(Long userId) {
