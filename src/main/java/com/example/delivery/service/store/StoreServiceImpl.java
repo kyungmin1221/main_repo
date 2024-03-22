@@ -133,6 +133,26 @@ public class StoreServiceImpl implements StoreService {
         return responseMenus;
     }
 
+    // 음식점 조회를 위한 리스트 반환 (“사장님” 및 “고객님”은 카테고리 기반으로 음식점을 검색하여 볼 수 있어야 합니다)
+    @Override
+    public List<StoreDto.SearchResponse> searchStoreByCategory(String category) {
+        List<Store> stores = storeRepository.findByCategory(category);
+
+        return stores.stream()
+                .map(this::convertToStoreDto)
+                .toList();
+    }
+
+    // 음식점 조회를 위한 리스트 반환 (“사장님” 및 “고객님”은 키워드 기반으로 음식점을 검색하여 볼 수 있어야 합니다)
+    @Override
+    public List<StoreDto.SearchResponse> searchStoreByKeyword(String keyword) {
+        List<Store> stores = storeRepository.findByMenuNameContainingKeyword(keyword);
+
+        return stores.stream()
+                .map(this::convertToStoreDto)
+                .toList();
+    }
+
     @Override
     public StoreDto.InfoResponse getStoreInfo(Integer storeId) {
         Store store = findStoreId(storeId);
@@ -146,15 +166,6 @@ public class StoreServiceImpl implements StoreService {
                 .totalSales(store.getTotalSales())
                 .imageUrl(store.getImageUrl())
                 .build();
-    }
-
-    // 음식점 조회를 위한 리스트 반환 (“사장님” 및 “고객님”은 키워드 기반으로 음식점을 검색하여 볼 수 있어야 합니다)
-    public List<StoreDto.SearchResponse> searchStoreList(String category) {
-        List<Store> stores = storeRepository.findByCategory(category);
-
-        return stores.stream()
-                .map(this::convertToStoreDto)
-                .toList();
     }
 
     @Override
