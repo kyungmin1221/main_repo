@@ -42,8 +42,12 @@ input:focus {
         <button class="btn btn-outline-primary btn-sm" onclick="search()">검색</button>
     </div>
     <div class="container" style="height: 50px"></div>
+    <div class="container" style="height: 50px">
+        <button th:if="${page.idx != 1}" class="btn btn-outline-primary" onclick="prevPage()"> < </button>
+        <button th:if="${page.idx < page.totalPage}" class="btn btn-outline-primary" onclick="nextPage()"> > </button>
+    </div>
         <div class="row">
-            <div id="storeCard" th:each="store , storeStat : ${stores}">
+            <div id="storeCard" th:each="store , storeStat : ${page.stores}">
                 <a th:href="'/orders/stores/'+${store.storeId}" class="card-link" th:id= "${storeStat.index}" >
                     <div class="row g-0">
                         <div style="height: 154px;" class="col-md-2">
@@ -68,6 +72,34 @@ input:focus {
          return;
         }
         location.href = "/stores/search/" + keyword;
+    }
+
+    function getUrlParams() {
+        var params = {};
+
+        window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+            function(str, key, value) {
+                params[key] = value;
+            }
+        );
+
+        return params;
+    }
+
+    function prevPage(){
+        var oParams = getUrlParams();
+        if(oParams.page === '1') return;
+
+        var idx = parseInt(oParams.page, 10) - 1;
+        location.href = window.location.href.split('?')[0] + "?page=" + idx;
+    }
+
+    function nextPage(){
+        var oParams = getUrlParams();
+        //if(oParams.page === 'MAX_SIZE') return;
+
+        var idx = parseInt(oParams.page, 10) + 1;
+        location.href = window.location.href.split('?')[0] + "?page=" + idx;
     }
 </script>
 <th:block th:include="common/include-script"></th:block>

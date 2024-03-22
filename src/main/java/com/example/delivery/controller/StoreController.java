@@ -100,8 +100,8 @@ public class   StoreController {
     @Secured(Role.Authority.CEO)
     @GetMapping("/orders")
     public String orderStatusPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<OrderDto.StatusResponse> ordersByUserId = orderService.getOrdersByUserId(userDetails.getUser());
-        System.out.println(ordersByUserId);
+        List<OrderDto.StatusResponse> ordersByUserId =
+                orderService.getOrdersByUserId(userDetails.getUser());
         model.addAttribute("orders", ordersByUserId);
         return "store/order/order-list";
     }
@@ -117,15 +117,23 @@ public class   StoreController {
 
     // 음식점 검색
     @GetMapping("/category/{categoryName}")
-    public String searchByCategoryName(Model model, @PathVariable String categoryName) {
-        model.addAttribute("stores", storeService.searchStoreByCategory(categoryName));
+    public String searchByCategoryName(Model model, @PathVariable String categoryName,
+                                       @RequestParam int page) {
+        int size = 20;
+        int offset = (page-1) * size;
+        model.addAttribute("page",
+                storeService.searchStoreByCategory(categoryName, offset, size));
         return "search-store";
     }
 
     // 음식점 검색
     @GetMapping("/search/{keyword}")
-    public String searchByKeyword(Model model, @PathVariable String keyword) {
-        model.addAttribute("stores", storeService.searchStoreByKeyword(keyword) );
+    public String searchByKeyword(Model model, @PathVariable String keyword,
+                                  @RequestParam int page) {
+        int size = 20;
+        int offset = (page-1)*size;
+        model.addAttribute("page",
+                storeService.searchStoreByKeyword(keyword, offset, size));
         return "search-store";
     }
 }
