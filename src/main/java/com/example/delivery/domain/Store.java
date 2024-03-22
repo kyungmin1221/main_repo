@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +33,16 @@ public class Store {
     private String imageUrl;
 
     private float storeScore;
-//    private int likeCount;
+
     private double totalSales;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @BatchSize(size = 1000)
     @OneToMany(mappedBy = "store")
     private List<Menu> menus = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "store")
-//    private List<Like> likes = new ArrayList<>();
 
     @Builder
     public Store(Integer id, String name, String workTime, String category, String address, String imageUrl, float storeScore, double totalSales, User user) {
@@ -54,7 +53,6 @@ public class Store {
         this.address = address;
         this.imageUrl = imageUrl;
         this.storeScore = storeScore;
-        //this.likeCount = likeCount;
         this.totalSales = totalSales;
         this.user = user;
     }

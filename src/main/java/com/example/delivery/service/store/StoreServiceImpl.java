@@ -64,7 +64,6 @@ public class StoreServiceImpl implements StoreService {
                     .category(store.getCategory())
                     .address(store.getAddress())
                     .storeScore(store.getStoreScore())
-                    //.likeCount(store.getLikeCount())
                     .totalSales(store.getTotalSales())
                     .imageUrl(store.getImageUrl())
                     .build();
@@ -162,7 +161,6 @@ public class StoreServiceImpl implements StoreService {
                 .category(store.getCategory())
                 .address(store.getAddress())
                 .storeScore(store.getStoreScore())
-                //.likeCount(store.getLikeCount())
                 .totalSales(store.getTotalSales())
                 .imageUrl(store.getImageUrl())
                 .build();
