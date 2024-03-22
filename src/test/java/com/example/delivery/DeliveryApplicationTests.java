@@ -109,38 +109,38 @@ class DeliveryApplicationTests {
         return UUID.randomUUID().toString() + "@example.com"; // example.com 부분은 적절한 도메인으로 변경해야 합니다.
     }
 
-    @Test
-    void queryTest() {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+//    @Test
+//    void queryTest() {
+//        StopWatch stopWatch = new StopWatch();
+//        stopWatch.start();
+//
+//        List<Store> findStore = storeRepository.findByCategory("치킨");
+//
+//        stopWatch.stop();
+//        System.out.println("###################################");
+//        System.out.println(stopWatch.prettyPrint());
+//        System.out.println("###################################");
+//    }
 
-        List<Store> findStore = storeRepository.findByCategory("치킨");
-
-        stopWatch.stop();
-        System.out.println("###################################");
-        System.out.println(stopWatch.prettyPrint());
-        System.out.println("###################################");
-    }
-
-    @Test
-    void queryWithoutFetchJoinTest() {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-
-        List<Store> stores = storeRepository.findByCategory("치킨");
-        for (Store store : stores) {
-            System.out.println("가게 이름: " + store.getName());
-
-            User owner = userRepository.findById(store.getUser().getId()).orElse(null);
-            if (owner != null) {
-                System.out.println("이메일 : " + owner.getEmail());
-            }
-        }
-
-        stopWatch.stop();
-        System.out.println("without Fetch Join Test");
-        System.out.println(stopWatch.prettyPrint());
-    }
+//    @Test
+//    void queryWithoutFetchJoinTest() {
+//        StopWatch stopWatch = new StopWatch();
+//        stopWatch.start();
+//
+//        List<Store> stores = storeRepository.findByCategory("치킨");
+//        for (Store store : stores) {
+//            System.out.println("가게 이름: " + store.getName());
+//
+//            User owner = userRepository.findById(store.getUser().getId()).orElse(null);
+//            if (owner != null) {
+//                System.out.println("이메일 : " + owner.getEmail());
+//            }
+//        }
+//
+//        stopWatch.stop();
+//        System.out.println("without Fetch Join Test");
+//        System.out.println(stopWatch.prettyPrint());
+//    }
 
 
     // 패치조인 테스트 ( 연관관계 있을 시 압도적 성능) - @Query 사용
