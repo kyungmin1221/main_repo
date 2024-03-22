@@ -21,7 +21,9 @@ public interface StoreService {
 
     List<StoreDto.MenuInfoResponse> getMenuInfoByStoreId(Integer storeId);
 
-    List<StoreDto.SearchResponse> searchStoreList(String category);
+    List<StoreDto.SearchResponse> searchStoreByCategory(String category);
+
+    List<StoreDto.SearchResponse> searchStoreByKeyword(String keyword);
 
     StoreDto.InfoResponse getStoreInfo(Integer storeId);
 }

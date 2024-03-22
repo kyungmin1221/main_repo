@@ -34,11 +34,9 @@ input:focus {
 <nav th:replace="common/header"></nav>
 <div class="container px-4 py-5" id="custom-cards">
     <div class="container mt-4 mb-4 d-flex justify-content-center">
-        <form action="#" method="post" class="d-flex align-items-center">
             <input type="text" class="form-control me-2" id="searchKeyword" placeholder=" 무슨 음식을 찾으시나요"
                    style="width: 500px; display: inline-block;">
-            <button type="button" class="btn btn-outline-primary btn-sm" onclick="search()">검색</button>
-        </form>
+            <button class="btn btn-outline-primary btn-sm" onclick="search()">검색</button>
     </div>
     <div class="container" style="height: 50px"></div>
     <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
@@ -63,10 +61,13 @@ input:focus {
 <th:block th:include="common/include-script"></th:block>
 </body>
 <script>
-    var keyword = document.getElementById("#searchKeyword");
-
     function search(){
-     location.href = "/stores/search/" + keyword;
+        var keyword = document.querySelector('#searchKeyword').value;
+        if(keyword === ''){
+         document.querySelector('#searchKeyword').focus();
+         return;
+        }
+        location.href = "/stores/search/" + keyword;
     }
 </script>
 </html>
