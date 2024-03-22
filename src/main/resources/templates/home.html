@@ -42,19 +42,19 @@ input:focus {
     <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
         <div class="col">
             <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
-  height: 200px;" onclick="location.href='/stores/category/치킨'">치킨</button>
+  height: 200px;" onclick="location.href='/stores/category/치킨?page=1'">치킨</button>
         </div>
         <div class="col">
             <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
-  height: 200px;" onclick="location.href='/stores/category/피자'">피자</button>
+  height: 200px;" onclick="location.href='/stores/category/피자?page=1'">피자</button>
         </div>
         <div class="col">
             <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
-  height: 200px;" onclick="location.href='/stores/category/족발'">족발</button>
+  height: 200px;" onclick="location.href='/stores/category/족발?page=1'">족발</button>
         </div>
         <div class="col">
             <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
-  height: 200px;" onclick="location.href='/stores/category/기타'">기타</button>
+  height: 200px;" onclick="location.href='/stores/category/기타?page=1'">기타</button>
         </div>
     </div>
 </div>
@@ -67,7 +67,7 @@ input:focus {
          document.querySelector('#searchKeyword').focus();
          return;
         }
-        location.href = "/stores/search/" + keyword;
+        location.href = "/stores/search/" + keyword + "?page=1";
     }
 </script>
 </html>

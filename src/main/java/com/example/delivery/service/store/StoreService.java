@@ -3,6 +3,7 @@ package com.example.delivery.service.store;
 import com.example.delivery.domain.Store;
 import com.example.delivery.domain.User;
 import com.example.delivery.dto.StoreDto;
+import com.example.delivery.dto.StorePageDto;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,9 +22,9 @@ public interface StoreService {
 
     List<StoreDto.MenuInfoResponse> getMenuInfoByStoreId(Integer storeId);
 
-    List<StoreDto.SearchResponse> searchStoreByCategory(String category);
+    StorePageDto.Info searchStoreByCategory(String category, int start, int size);
 
-    List<StoreDto.SearchResponse> searchStoreByKeyword(String keyword);
+    StorePageDto.Info searchStoreByKeyword(String keyword, int start, int size);
 
     StoreDto.InfoResponse getStoreInfo(Integer storeId);
 }
