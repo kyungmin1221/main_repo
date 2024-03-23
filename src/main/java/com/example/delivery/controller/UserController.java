@@ -39,7 +39,6 @@ public class UserController {
     @PostMapping("/user/signup")
     public String registerUser(@ModelAttribute("user") @Valid  UserRegisterDto.UserRegisterRequestDto requestDto,
                                RedirectAttributes redirectAttributes) {
-
         try {
             UserRegisterDto.UserRegisterResponseDto responseDto = userService.registerUser(requestDto);
             redirectAttributes.addFlashAttribute("success", "회원가입에 성공했습니다. 로그인해주세요.");

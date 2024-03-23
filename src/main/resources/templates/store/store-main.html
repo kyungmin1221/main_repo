@@ -12,6 +12,7 @@
     a:link { color: black; text-decoration: none;}
     a:visited { color: black; text-decoration: none;}
     a:hover { color: black; text-decoration: none;}
+    #menuCard { margin: 5px 50px 5px 50px;}
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -19,9 +20,9 @@
 <div class="container" style="height: 80px">
 </div>
 <div class="container">
-    <div class="row" style="background-color:#F0F8FF">
+    <div class="row" style="background-color:#cfd9f6">
         <div class="col-2">
-            <img src="/img/logo2.png" alt="Store Logo" height="200" width="200">
+            <img th:src="${store.imageUrl}" alt="Store Logo" height="200" width="200">
         </div>
         <div class="col-6 align-self-center">
             <h1 th:text="${store.name}" style="display:inline"></h1>
@@ -35,20 +36,22 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-6" id="menuCard" th:each="menu, menuStat : ${menus}">
-            <a href='javascript:void(0);' th:onclick="addList([[${menuStat.index}]],[[${menu.id}]],[[${menu.name}]],[[${menu.price}]]);" class="card-link" th:id= "${menuStat.index}" >
-                <div class="row g-0">
-                    <div style="height: 154px;" class="col-md-4">
-                        <img style="height: 100%; width:100%; object-fit:cover;" th:src="${menu.imageUrl}" class="img-fluid rounded-start">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body" style="background-color: #DDDDDD">
-                            <h5 class="card-title">[[${menu.name}]] - [[${menu.price}]] P</h5>
-                            <p class="card-text overflow-auto" style="height: 130px;" th:text="${menu.description}"></p>
+        <div class="col-6" >
+            <div id="menuCard" th:each="menu, menuStat : ${menus}">
+                <a href='javascript:void(0);' th:onclick="addList([[${menuStat.index}]],[[${menu.id}]],[[${menu.name}]],[[${menu.price}]]);" class="card-link" th:id= "${menuStat.index}" >
+                    <div class="row g-0">
+                        <div style="height: 154px;" class="col-md-4">
+                            <img style="height: 100%; width:100%; object-fit:cover;" th:src="${menu.imageUrl}" class="img-fluid rounded-start">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body" style="background-color: #F0F8FF">
+                                <h5 class="card-title">[[${menu.name}]] - [[${menu.price}]] P</h5>
+                                <p class="card-text overflow-auto" style="height: 130px;" th:text="${menu.description}"></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
         </div>
         <div class="col-6" >
             <form action="/store-main" method="post" id="menuForm">

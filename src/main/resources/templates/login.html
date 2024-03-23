@@ -16,7 +16,7 @@
 <body>
 <div id="login-form">
   <div id="login-title">Log into Foodrium</div>
-  <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=230b700257f59229b1175b59dc142db6&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'">
+  <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=230b700257f59229b1175b59dc142db6&redirect_uri=https://101.101.217.98:443/api/user/kakao/callback&response_type=code'">
     카카오로 로그인하기
   </button>
   <button id="login-id-btn" onclick="location.href='/api/user/signup'">
@@ -47,7 +47,7 @@
     errorDiv.style.display = 'block';
   }
 
-  const host = 'http://' + window.location.host;
+  const host = 'https://' + window.location.host;
 
   function onLogin() {
     let email = $('#username').val();
@@ -67,32 +67,5 @@
               window.location.href = host + '/api/user/login-page?error'
             });
   }
-
-  // function onLogin() {
-  //   let email = $('#username').val();
-  //   let password = $('#password').val();
-  //
-  //   $.ajax({
-  //     type: "POST",
-  //     url: `/api/user/login`,
-  //     contentType: "application/json",
-  //     data: JSON.stringify({email: email, password: password}),
-  //   })
-  //           .done(function (res, status, xhr) {
-  //             const token = xhr.getResponseHeader('Authorization');
-  //
-  //             Cookies.set('Authorization', token, {path: '/'})
-  //
-  //             $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-  //               jqXHR.setRequestHeader('Authorization', token);
-  //             });
-  //
-  //             window.location.href = host;
-  //           })
-  //           .fail(function (jqXHR, textStatus) {
-  //             alert("Login Fail");
-  //             window.location.href = host + '/api/user/login-page?error'
-  //           });
-  // }
 </script>
 </html>
