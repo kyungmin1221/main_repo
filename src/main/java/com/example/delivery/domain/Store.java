@@ -36,7 +36,7 @@ public class Store {
 
     private double totalSales;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -47,6 +47,18 @@ public class Store {
     @Builder
     public Store(Integer id, String name, String workTime, String category, String address, String imageUrl, float storeScore, double totalSales, User user) {
         this.id = id;
+        this.name = name;
+        this.workTime = workTime;
+        this.category = category;
+        this.address = address;
+        this.imageUrl = imageUrl;
+        this.storeScore = storeScore;
+        this.totalSales = totalSales;
+        this.user = user;
+    }
+
+    // ID를 제외한 나머지 필드를 초기화하는 생성자
+    public Store(String name, String workTime, String category, String address, String imageUrl, float storeScore, double totalSales, User user) {
         this.name = name;
         this.workTime = workTime;
         this.category = category;
