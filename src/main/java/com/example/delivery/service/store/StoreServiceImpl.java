@@ -6,13 +6,13 @@ import com.example.delivery.domain.Store;
 import com.example.delivery.domain.User;
 import com.example.delivery.dto.StoreDto;
 import com.example.delivery.dto.StorePageDto;
-import com.example.delivery.exception.CustomException;
-import com.example.delivery.exception.ErrorCode;
+import com.example.delivery.dto.StoreProDto;
 import com.example.delivery.repository.MenuRepository;
 import com.example.delivery.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -150,20 +150,47 @@ public class StoreServiceImpl implements StoreService {
                 .build();
     }
 
-    // 음식점 조회를 위한 리스트 반환 (“사장님” 및 “고객님”은 키워드 기반으로 음식점을 검색하여 볼 수 있어야 합니다)
+
+
     @Override
-    public StorePageDto.Info searchStoreByKeyword(String keyword, int start, int size) {
+    public StorePageDto.Info searchStoreByKeyword(String category, int start, int size){
+        Pageable pageable = PageRequest.of(start, size);
+        Page<Store> storePage = storeRepository.searchByCategoryWithPaging(category, pageable);
 
-        Page<Store> storePage = storeRepository.findByMenuNameContainingKeyword(keyword, PageRequest.of(start, size));
-
-        return  StorePageDto.Info.builder()
+        return StorePageDto.Info.builder()
                 .stores(storePage.getContent().stream()
                         .map(this::convertToStoreDto)
-                        .toList())
+                        .collect(Collectors.toList()))
                 .idx(storePage.getNumber() + 1)
                 .totalPage(storePage.getTotalPages())
                 .build();
     }
+
+    @Override
+    public Page<StoreProDto.ProDto> searchStoresByCategoryWithPaging(String category, int start, int size) {
+        Pageable pageable = PageRequest.of(start, size);
+        return storeRepository.testProjection(category, pageable);
+    }
+
+
+
+    // 음식점 조회를 위한 리스트 반환 (“사장님” 및 “고객님”은 키워드 기반으로 음식점을 검색하여 볼 수 있어야 합니다)
+//    @Override
+//    public StorePageDto.Info searchStoreByKeyword(String keyword, int start, int size) {
+//
+//        Page<Store> storePage = storeRepository.findByMenuNameContainingKeyword(keyword, PageRequest.of(start, size));
+//
+//        return  StorePageDto.Info.builder()
+//                .stores(storePage.getContent().stream()
+//                        .map(this::convertToStoreDto)
+//                        .toList())
+//                .idx(storePage.getNumber() + 1)
+//                .totalPage(storePage.getTotalPages())
+//                .build();
+//    }
+
+
+
 
     @Override
     public StoreDto.InfoResponse getStoreInfo(Integer storeId) {

@@ -18,7 +18,6 @@ public interface StoreRepository extends JpaRepository<Store, Integer> , StoreRe
     Optional<Store> findByUserId(Long id);
     Page<Store> findByCategory(String category, Pageable pageable);
 
-//    @Query("SELECT s FROM Store s WHERE EXISTS (SELECT 1 FROM Menu m WHERE m.name LIKE %:keyword%)")
     @Query("SELECT s FROM Store s JOIN s.menus m WHERE m.name LIKE %:keyword%")
     Page<Store> findByMenuNameContainingKeyword(@Param("keyword") String keyword,Pageable pageable);
 
