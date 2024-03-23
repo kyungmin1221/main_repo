@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>푸드리움</title>
+    <th:block th:include="common/include-link"></th:block>
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="common/header"></nav>
+<div class="container">
+    <h1 class="m-5">
+        음식점 메뉴 등록
+    </h1>
+
+        <div class="col">
+            <form th:action method="post" enctype="multipart/form-data">
+                <div class="col-md-6 mb-3">
+                    <label for="image" class="form-label">이미지</label>
+                    <input type="file" class="form-control" name="image" id="image">
+                </div>
+                <div class="col-md-6 mb-3 ">
+                    <label for="name" class="form-label w-50">메뉴 이름</label>
+                    <input type="text" class="form-control" name="name" id="name">
+                </div>
+                <div class="col-md-6 mb-3 ">
+                    <label for="description" class="form-label w-50">메뉴 설명</label>
+                    <input type="text" class="form-control" name="description" id="description">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="price" class="form-label">금액</label>
+                    <input type="text" class="form-control" name="price" id="price">
+                </div>
+                <button type="submit" class="btn btn-primary">등록</button>
+                <button type="button" onclick="history.back()" class="btn btn-danger">취소</button>
+            </form>
+        </div>
+
+</div>
+<th:block th:include="common/include-script"></th:block>
+</body>
+</html>

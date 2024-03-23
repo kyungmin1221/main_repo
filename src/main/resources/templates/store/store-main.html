@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>푸드리움</title>
+    <th:block th:include="common/include-link"></th:block>
+    <style>
+    a:link { color: black; text-decoration: none;}
+    a:visited { color: black; text-decoration: none;}
+    a:hover { color: black; text-decoration: none;}
+    </style>
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="common/header"></nav>
+<div class="container" style="height: 80px">
+</div>
+<div class="container">
+    <div class="row" style="background-color:#F0F8FF">
+        <div class="col-2">
+            <img src="/img/logo2.png" alt="Store Logo" height="200" width="200">
+        </div>
+        <div class="col-6 align-self-center">
+            <h1 th:text="${store.name}" style="display:inline"></h1>
+            <p><span style="color:#ffd43c">★</span><span th:text="${store.storeScore}"></span></p>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+</div>
+<div class="container" style="height: 80px" id="resultDiv">
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-6" id="menuCard" th:each="menu, menuStat : ${menus}">
+            <a href='javascript:void(0);' th:onclick="addList([[${menuStat.index}]],[[${menu.id}]],[[${menu.name}]],[[${menu.price}]]);" class="card-link" th:id= "${menuStat.index}" >
+                <div class="row g-0">
+                    <div style="height: 154px;" class="col-md-4">
+                        <img style="height: 100%; width:100%; object-fit:cover;" th:src="${menu.imageUrl}" class="img-fluid rounded-start">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body" style="background-color: #DDDDDD">
+                            <h5 class="card-title">[[${menu.name}]] - [[${menu.price}]] P</h5>
+                            <p class="card-text overflow-auto" style="height: 130px;" th:text="${menu.description}"></p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6" >
+            <form action="/store-main" method="post" id="menuForm">
+            <ol class="list-group" id="menuList">
+                <li class="list-group-item d-flex justify-content-between align-items-start active">
+                    <div class="ms-2 me-auto">
+                        <h3>내가 선택한 주문</h3>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start" >
+                <div class="col-sm align-self-center" id="menuDefault">
+                    <div class="fw-bold">주문할 메뉴를 클릭하세요</div>
+                </div>
+                </li>
+            </ol>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <div></div>
+                <button class="btn btn-outline-primary" type="button" onclick="onSubmit()">주문하기</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script >
+
+    var menuMap = new Map();
+
+    function addList(index, id, name, price) {
+
+        if(menuMap.has(index)) return;
+        menuMap.set(index,id);
+
+        var menuListHtml = document.querySelector('#menuList').innerHTML;
+
+        menuListHtml += `
+            <li class="list-group-item d-flex justify-content-between align-items-start"  id="menuLi${index}">
+                <div class="col-sm align-self-center">
+                <input type="hidden" name="menus[${index}][menuId]" value="${id}">
+
+                    <div class="fw-bold"><button class="btn btn-danger" type="button" style="width: 35px"
+                        onclick="removeHtml(${index})">X</button>
+                        &nbsp;&nbsp;${name}</div>
+                </div>
+                <div class="col-sm align-self-center" id="priceDiv${index}">
+                <input type="hidden" id="priceV${index}" name="menus[${index}][totalPrice]" value="${price}">
+                    <input type="number" id="price${index}" name="totalPrice"  value="${price}" disabled>
+                </div>
+                <div class="col-sm input-group" id="quantityDiv${index}">
+                 <input type="hidden" id="quantityV${index}" name="menus[${index}][quantity]" value="1">
+                        <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
+                        onclick="subQuantity(${index},${price})"
+                        >-</button>
+                        <input type="number" id="quantity${index}" class="form-control text-center" value="1" disabled>
+                        <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
+                        onclick="addQuantity(${index},${price})">+</button>
+                </div>
+            </li>
+            `;
+        document.querySelector('#menuList').innerHTML = menuListHtml;
+    }
+
+    function addQuantity(i, menu_price) {
+        var quantity = parseInt(document.querySelector('#quantity'+i).value);
+        quantity += 1;
+        var price = menu_price * quantity;
+        updateQuantity(i, quantity, price, menu_price);
+    }
+
+    function subQuantity(i, menu_price) {
+        var quantity = parseInt(document.querySelector('#quantity'+i).value);
+        quantity -= 1;
+        var price = menu_price * quantity;
+        updateQuantity(i, quantity, price, menu_price);
+        if(quantity <= 0) removeHtml(i);
+    }
+
+
+    function updateQuantity(i, quantity, price, menu_price){
+        document.querySelector('#quantityDiv'+i).innerHTML = `
+           <input type="hidden" id="quantityV${i}" name="menus[${i}][quantity]" value="${quantity}">
+                    <button class="btn btn-outline-danger" id="minus" type="button" style="width: 35px"
+                    onclick="subQuantity(${i},${menu_price})"
+                    >-</button>
+                    <input type="number" id="quantity${i}" class="form-control text-center" value= "${quantity}" disabled>
+                    <button class="btn btn-outline-danger" id="plus" type="button" style="width: 35px"
+                    onclick="addQuantity(${i},${menu_price})">+</button>
+            `;
+        document.querySelector('#priceDiv'+i).innerHTML = `
+                <input type="hidden" id="priceV${i}" name="menus[${i}][totalPrice]" value="${price}">
+                <input type="number" id="price${i}" name="totalPrice"  value="${price}" disabled>
+                 `;
+    }
+
+    function removeHtml(i) {
+        if(menuMap.has(i)) menuMap.delete(i);
+
+        document.querySelector('#menuLi'+i).remove();
+    }
+
+    function getURLParams(idx) {
+            var str = window.location.href;
+            var res = str.split('/');
+            return res[idx];
+    }
+
+    function onSubmit() {
+              if (menuMap.size <= 0){
+              alert('최소 1개 이상 주문하셔야 합니다.');
+              return;
+              }
+              var formData = $('#menuForm').serializeObject();
+
+              $.ajax({
+                  url : `/orders/stores/${getURLParams(5)}`,
+                  type : 'post',
+                  contentType: "application/json; charset=UTF-8",
+                  data : JSON.stringify(formData.menus),
+                  success : function (result) {
+                  document.querySelector('#resultDiv').innerHTML = result;
+                  },
+                  error : function (request, status, error) {
+                      console.log(error);
+                  }
+              });
+    }
+
+
+</script>
+<th:block th:include="common/include-script"></th:block>
+</body>
+</html>

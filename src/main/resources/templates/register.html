@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회 원 가 입</title>
+    <meta name="viewport" content="width= device-width" initial-scale="1">
+    <th:block th:include="common/include-link"></th:block>
+</head>
+<body>
+<nav th:replace="common/header"></nav>
+<div class="container-fluid py-5" >
+    <br><br><br><br>
+    <div>
+        <h1 class="display-4">Join MemberShip</h1>
+        <br><br>
+        <form action="/api/user/signup" method="post" onsubmit="return checkSubmit()">
+            <ul class="list-group btn-block">
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>Email</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input type="text" pattern="[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$" title="이메일 형식에 맞춰 입력하세요." name="email" id="newEmail" style="margin: 1px" maxlength="40">
+                        <button type="button" id="emailVerifyBtn">인증번호 요청</button>
+                    </div>
+                    <div class="col-8 col-md-4 text-center" id="emailMsg" style="float: left;"></div>
+                </li>
+                <input type="hidden" id="emailVerified" value="false">
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>인증번호</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input type="text" name="verificationCode" id="verificationCode" style="margin: 1px" maxlength="6">
+                        <button type="button" id="verifyCodeBtn">인증번호 확인</button>
+                    </div>
+                    <div class="col-8 col-md-4 text-center" id="codeVerifyMsg" style="float: left;"></div>
+                </li>
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>Nickname</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input required="required" type="text" maxlength="15" name="nickname" id="nickname" style="margin: 1px" placeholder="글자수 제한 15">
+                        <input type="hidden" id="nicknameChecked"></div><div class="col-8  col-md-4 text-center" id="nickMsg" style="float: left;">
+                </div>
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>Password</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input required="required" type="password" name="password" id="pw1" style="margin: 1px" maxlength="20" placeholder="20자 이하 입력">
+                    </div>
+                </li>
+                <li class='list-group-item'>
+                    <div class='col-4 col-md-4 text-center' style='float: left;'>RetypePassword</div>
+                    <div class='col-8 col-md-4 text-center' style='float: left;'>
+                        <input required="required" maxlength="20" type="password" name="pw2" id="pw2" style="margin: 1px" >
+                        <input type="hidden" id="passwordChecked">
+                    </div>
+                    <div class="col-8  col-md-4 text-center" id="isEqual" style="float: left;">
+                    </div>
+                </li>
+                <li class='list-group-item'>
+                    <div class='col-12 text-center'>
+                        <input type="checkbox" id="authorityCheck" name="authority">
+                        <label for="authorityCheck">사장님 인증 필요</label>
+                    </div>
+                </li>
+                <li class='list-group-item' id="tokenSection" style="display:none;">
+                    <div class='col-12 text-center'>
+                        <label for="ceoToken">사장님 인증 토큰:</label>
+                        <input type="text" id="ceoToken" name="ceoToken" placeholder="토큰 입력">
+                    </div>
+                </li>
+            </ul>
+            <br>
+            <button class="btn btn-primary btn-lg" type="submit">SignUp</button>
+            <br><br>
+            <hr class="my-4">
+            <p> 푸드리움 서비스는 회원님의 소중한 정보를 보호하고 있습니다!</p>
+
+        </form>
+    </div>
+</div>
+</body>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<th:block th:include="common/include-script"></th:block>
+
+<script type="text/javascript">
+    $("#header").load("header.html");
+
+    /*$("#newEmail").on("keyup",function() {
+            if($("#newEmail").val().length < 7){
+            $("#emailMsg").html("사용불가 이메일");
+            }else{
+            $.ajax({
+                type : "post",
+                url : "/email-check",
+                data : {
+                    "email" : $("#newEmail").val()
+                },
+                dataType : "json",
+                success : function(data) {
+                    if(data == false){
+                        $("#emailMsg").css("color","blue")
+                        $("#emailMsg").html("사용 가능");
+                        $("#emailChecked").val(true);
+                    }else{
+                        $("#emailMsg").css("color","red")
+                        $("#emailMsg").html("사용 불가능");
+                        $("#emailChecked").val(false);
+                    }
+                },
+                error: function onError(error){
+    console.error(error);
+  }
+            });
+        }})
+
+    $("#nickname").on("keyup",function() {
+            if($("#nickname").val().length == 0){
+                $("#nickMsg").css("color","black")
+                $("#nickMsg").html("닉네임을 입력하세요");
+                $("#nicknameChecked").val(false);
+            }else{
+            $.ajax({
+                type : "post",
+                url : "/nickname-check",
+                data : {
+                    "nickname" : $("#nickname").val()
+                },
+                dataType : "json",
+                success : function(data) {
+                    if(data == false){
+                        $("#nickMsg").css("color","blue")
+                        $("#nickMsg").html("사용 가능");
+                        $("#nicknameChecked").val(true);
+                    }else{
+                        $("#nickMsg").css("color","red")
+                        $("#nickMsg").html("사용 불가능");
+                        $("#nicknameChecked").val(false);
+                    }
+                }
+            });
+            }
+    })*/
+
+    $("#pw2").on("keyup", function() {
+            if ($("#pw1").val() == $("#pw2").val()){
+                $("#isEqual").html("<font color='blue'> 일치</font>");
+                $("#passwordChecked").val(true);
+            }else {
+                $("#isEqual").html("<font color='red'> 불일치</font>");
+                $("#passwordChecked").val(false);
+            }});
+
+    $("#emailVerifyBtn").click(function() {
+        $.ajax({
+            type: "post",
+            url: "/email-verification",
+            data: {
+                "email": $("#newEmail").val()
+            },
+            success: function(response) {
+                $("#emailMsg").html("인증번호가 발송되었습니다. 이메일을 확인해 주세요.");
+            },
+            error: function() {
+                $("#emailMsg").html("인증번호 발송 실패. 다시 시도해 주세요.");
+            }
+        });
+    });
+
+    // 인증번호 확인 이벤트 처리
+    $("#verifyCodeBtn").click(function() {
+        $.ajax({
+            type: "get",
+            url: "/email-verification",
+            data: {
+                "email": $("#newEmail").val(),
+                "code": $("#verificationCode").val()
+            },
+            success: function(response) {
+                if(response === true) {
+                    $("#codeVerifyMsg").html("인증 성공");
+                    $("#emailVerified").val("true"); // 이메일 인증 상태 업데이트
+                } else {
+                    $("#codeVerifyMsg").html("인증 실패. 코드를 확인해 주세요.");
+                }
+            },
+            error: function() {
+                $("#codeVerifyMsg").html("인증 확인 실패. 다시 시도해 주세요.");
+            }
+        });
+    });
+    $(document).ready(function() {
+        $("#authorityCheck").change(function() {
+            if (this.checked) {
+                $("#tokenSection").show();
+            } else {
+                $("#tokenSection").hide();
+            }
+        });
+    });
+
+    var checkSubmit = function(){
+        // 이메일 인증 확인
+        if ($("#emailVerified").val() != "true") {
+            alert('이메일 인증을 완료해 주세요');
+            return false; // 이메일 인증이 완료되지 않았으면 폼 제출 방지
+        }
+        // "사장님 인증 필요" 체크박스가 선택되었으나 토큰이 입력되지 않은 경우
+        if ($("#authorityCheck").is(":checked") && $("#ceoToken").val().trim() === "") {
+            alert('사장님 인증 토큰을 입력해 주세요');
+            return false; // 사장님 인증 토큰이 입력되지 않았으면 폼 제출 방지
+        }
+
+        return true; // 이메일 인증이 성공적으로 완료되었으면 폼 제출 허용
+    }
+</script>
+</html>

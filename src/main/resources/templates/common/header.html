@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<nav th:fragment="header" class="navbar navbar-expand-lg justify-content-center" style="background-color: #F0FFF0;">
+        <div class="container-fluid ">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo.png" alt="Food Rium Logo" height="80" width="150">
+                <p class='logo_name' style="padding-left: 7px; display: inline; font-family:'Nanum Pen Script', cursive; font-size: 40px; " >푸 드 리 움</p>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/user/mypage">My Page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script>
+    var socket = new SockJS('/websocket');
+    var stompClient = Stomp.over(socket); // STOMP 클라이언트 생성. STOMP -> 메시지 전송을 위한 프로토콜
+
+    stompClient.connect({}, function(frame) {
+        console.log('Connected::: ' + frame);
+        // 현재 사용자의 주문 알림을 구독합니다. '/user' prefix는 현재 사용자에게만 메시지를 전송하는 것을 의미합니다.
+        stompClient.subscribe('/user/topic/orders', function(message) {
+            alert('알림 : ' + message.body);
+        });
+    });
+</script>
+
+
+
+</html>

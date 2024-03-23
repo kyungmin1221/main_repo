@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>푸드리움</title>
+    <th:block th:include="common/include-link"></th:block>
+    <style >
+ input {
+    background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
+    background-position: 13px center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+
+    padding: 5px 5px;
+    text-indent: 30px;
+
+    width: 120px;
+}
+
+input:focus {
+    background-image: none;
+    background-position: -10px center;
+    text-indent: 0;
+    width: 50%;
+}
+    </style>
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="common/header"></nav>
+<div class="container px-4 py-5" id="custom-cards">
+    <div class="container mt-4 mb-4 d-flex justify-content-center">
+            <input type="text" class="form-control me-2" id="searchKeyword" placeholder=" 무슨 음식을 찾으시나요"
+                   style="width: 500px; display: inline-block;">
+            <button class="btn btn-outline-primary btn-sm" onclick="search()">검색</button>
+    </div>
+    <div class="container" style="height: 50px"></div>
+    <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
+        <div class="col">
+            <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
+  height: 200px;" onclick="location.href='/stores/category/치킨?page=1'">치킨</button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
+  height: 200px;" onclick="location.href='/stores/category/피자?page=1'">피자</button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
+  height: 200px;" onclick="location.href='/stores/category/족발?page=1'">족발</button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-outline-primary fs-1" style="width: 200px;
+  height: 200px;" onclick="location.href='/stores/category/기타?page=1'">기타</button>
+        </div>
+    </div>
+</div>
+<th:block th:include="common/include-script"></th:block>
+</body>
+<script>
+    function search(){
+        var keyword = document.querySelector('#searchKeyword').value;
+        if(keyword === ''){
+         document.querySelector('#searchKeyword').focus();
+         return;
+        }
+        location.href = "/stores/search/" + keyword + "?page=1";
+    }
+</script>
+</html>

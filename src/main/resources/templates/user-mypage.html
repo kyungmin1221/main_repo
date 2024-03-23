@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>푸드리움</title>
+    <th:block th:include="common/include-link"></th:block>
+<!--    <script>-->
+<!--        document.addEventListener('DOMContentLoaded', function() {-->
+<!--          const token = getToken(); // auth.js 내에 정의된 getToken 함수 사용-->
+<!--    -->
+<!--          if (token) {-->
+<!--            fetch('/', {-->
+<!--              method: 'GET',-->
+<!--              credentials: 'include',-->
+<!--              headers: {-->
+<!--                'Authorization': token-->
+<!--              }-->
+<!--            })-->
+<!--                    .then(response => {-->
+<!--                      if (!response.ok) {-->
+<!--                        throw new Error('Network response was not ok');-->
+<!--                      }-->
+<!--                      return response.json();-->
+<!--                    })-->
+<!--                    .then(data => {-->
+<!--                      console.log(data);-->
+<!--                      // 데이터 처리 로직-->
+<!--                    })-->
+<!--                    .catch(error => {-->
+<!--                      console.error('Fetch error:', error);-->
+<!--                    });-->
+<!--          } else {-->
+<!--            console.error('No token found');-->
+<!--          }-->
+<!--        });-->
+<!--    </script>-->
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="common/header"></nav>
+<div class="container">
+    <h1 class="mt-5">회원 정보</h1>
+
+    <a th:if="${userDto.role.getAuthority() == 'ROLE_CEO'}" class="nav-link" href="/stores"><button type="button" class="btn btn-primary btn-lg">음식점 관리 (사장님 전용)</button></a>
+
+    <div class="card mt-5" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">이메일 : <span th:text="${userDto.email}"></span></li>
+            <li class="list-group-item">닉네임 : <span th:text="${userDto.nickname}"></span></li>
+            <li class="list-group-item">포인트 금액 : <span th:text="${#numbers.formatInteger(userDto.point, 3, 'COMMA') + ' 원'}"></span></li>
+        </ul>
+    </div>
+</div>
+<th:block th:include="common/include-script"></th:block>
+</body>
+</html>
