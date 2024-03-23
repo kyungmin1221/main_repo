@@ -3,7 +3,7 @@ package com.example.delivery.controller;
 import com.example.delivery.constant.Role;
 import com.example.delivery.dto.OrderDto;
 import com.example.delivery.dto.StoreDto;
-import com.example.delivery.security.UserDetailsImpl;
+import com.example.delivery.global.security.UserDetailsImpl;
 import com.example.delivery.service.order.OrderService;
 import com.example.delivery.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
