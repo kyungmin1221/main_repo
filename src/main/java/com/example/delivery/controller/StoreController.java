@@ -120,7 +120,7 @@ public class   StoreController {
     public String searchByCategoryName(Model model, @PathVariable String categoryName,
                                        @RequestParam int page) {
         int size = 5;
-        int offset = (page-1) * size;
+        int offset = (page-1);
         model.addAttribute("page",
                 storeService.searchStoreByCategory(categoryName, offset, size));
         return "search-store";
@@ -131,7 +131,7 @@ public class   StoreController {
     public String searchByKeyword(Model model, @PathVariable String keyword,
                                   @RequestParam int page) {
         int size = 5;
-        int offset = (page-1)*size;
+        int offset = (page-1);
         model.addAttribute("page",
                 storeService.searchStoreByKeyword(keyword, offset, size));
         return "search-store";

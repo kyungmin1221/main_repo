@@ -12,6 +12,7 @@
     a:link { color: black; text-decoration: none;}
     a:visited { color: black; text-decoration: none;}
     a:hover { color: black; text-decoration: none;}
+    #menuCard { margin: 5px 50px 5px 50px;}
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -19,9 +20,9 @@
 <div class="container" style="height: 80px">
 </div>
 <div class="container">
-    <div class="row" style="background-color:#F0F8FF">
+    <div class="row" style="background-color:#b8c4e9">
         <div class="col-2">
-            <img src="/img/logo2.png" alt="Store Logo" height="200" width="200">
+            <img th:src="${store.imageUrl}" alt="Store Logo" height="200" width="200">
         </div>
         <div class="col-6 align-self-center">
             <h1 th:text="${store.name}" style="display:inline"></h1>
@@ -43,7 +44,7 @@
                             <img style="height: 100%; width:100%; object-fit:cover;" th:src="${menu.imageUrl}" class="img-fluid rounded-start">
                         </div>
                         <div class="col-md-8">
-                            <div class="card-body" style="background-color: #DDDDDD">
+                            <div class="card-body" style="background-color: #F0F8FF">
                                 <h5 class="card-title">[[${menu.name}]] - [[${menu.price}]] P</h5>
                                 <p class="card-text overflow-auto" style="height: 130px;" th:text="${menu.description}"></p>
                             </div>
