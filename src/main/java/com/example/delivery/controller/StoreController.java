@@ -119,7 +119,7 @@ public class   StoreController {
     @GetMapping("/category/{categoryName}")
     public String searchByCategoryName(Model model, @PathVariable String categoryName,
                                        @RequestParam int page) {
-        int size = 20;
+        int size = 5;
         int offset = (page-1) * size;
         model.addAttribute("page",
                 storeService.searchStoreByCategory(categoryName, offset, size));
@@ -130,7 +130,7 @@ public class   StoreController {
     @GetMapping("/search/{keyword}")
     public String searchByKeyword(Model model, @PathVariable String keyword,
                                   @RequestParam int page) {
-        int size = 20;
+        int size = 5;
         int offset = (page-1)*size;
         model.addAttribute("page",
                 storeService.searchStoreByKeyword(keyword, offset, size));
