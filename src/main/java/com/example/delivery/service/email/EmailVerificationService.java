@@ -1,11 +1,11 @@
 package com.example.delivery.service.email;
 
 
-import com.example.delivery.exception.CustomException;
-import com.example.delivery.exception.ErrorCode;
+import com.example.delivery.global.exception.CustomException;
+import com.example.delivery.global.exception.ErrorCode;
 import com.example.delivery.repository.UserRepository;
-import com.example.delivery.tool.email.EmailTool;
-import com.example.delivery.tool.redis.RedisTool;
+import com.example.delivery.global.tool.email.EmailTool;
+import com.example.delivery.global.tool.redis.RedisTool;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

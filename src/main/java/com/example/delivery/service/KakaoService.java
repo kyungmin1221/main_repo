@@ -5,7 +5,7 @@ package com.example.delivery.service;
 import com.example.delivery.constant.Role;
 import com.example.delivery.domain.User;
 import com.example.delivery.dto.KakaoUserInfoDto;
-import com.example.delivery.jwt.JwtUtil;
+import com.example.delivery.global.jwt.JwtUtil;
 import com.example.delivery.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

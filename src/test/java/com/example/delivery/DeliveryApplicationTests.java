@@ -75,9 +75,7 @@ class DeliveryApplicationTests {
             String category = generateRandomCategory();
             String address = "123 Main St, City, Country"; // 랜덤 주소를 생성하도록 수정 가능
             String imageUrl = "/img/logo.png"; // 적절한 이미지 URL을 넣으세요
-//            float storeScore = new Random().nextFloat() * 5; // 랜덤 가게 평점을 생성하도록 수정 가능
             float storeScore = 0; // 랜덤 가게 평점을 생성하도록 수정 가능
-            // double totalSales = new Random().nextInt(1000000); // 랜덤 총 매출액을 생성하도록 수정 가능
             double totalSales = 0; // 랜덤 총 매출액을 생성하도록 수정 가능
 
             // Store 객체 생성
@@ -220,33 +218,4 @@ class DeliveryApplicationTests {
             System.out.println("infoResponse category :  " + infoResponse);
         }
     }
-
-
-    // 더미데이터로 페이징 테스트
-//    @Test
-//    @Transactional
-//    void searchPageTestWithDummyData() {
-//
-//        PageRequest pageRequest = PageRequest.of(0, 10); // 첫 번째 페이지, 페이지 당 10개 항목
-//
-//        // 테스트 실행
-//        Page<StoreDto.InfoResponse> result = storeRepository.searchPage(pageRequest);
-//
-//        // 첫번째 페이지 데이터 출력
-//        for (StoreDto.InfoResponse infoResponse : result) {
-//            System.out.println("infoResponse = " + infoResponse);
-//
-//        }
-//
-//        // 검증
-//        assertThat(result.getContent()).isNotEmpty();
-//        assertThat(result.getTotalElements()).isEqualTo(100000); // 총 엘리먼트 개수 검증 (10만 개의 더미 데이터가 있으므로)
-//        assertThat(result.getContent().size()).isEqualTo(10); // 페이지에 반환된 항목의 수 검증
-//        assertThat(result.getContent()).extracting("name")
-//                .contains("Store 0", "Store 1", "Store 2", "Store 3"); // 첫 번째 페이지의 스토어 이름 검증
-//    }
-
-
-
-
 }

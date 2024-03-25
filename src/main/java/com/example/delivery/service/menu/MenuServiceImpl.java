@@ -1,8 +1,8 @@
 package com.example.delivery.service.menu;
 
 import com.example.delivery.domain.Menu;
-import com.example.delivery.exception.CustomException;
-import com.example.delivery.exception.ErrorCode;
+import com.example.delivery.global.exception.CustomException;
+import com.example.delivery.global.exception.ErrorCode;
 import com.example.delivery.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

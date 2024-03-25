@@ -1,6 +1,6 @@
 package com.example.delivery.service.store;
 
-import com.example.delivery.aws.S3Uploader;
+import com.example.delivery.global.aws.S3Uploader;
 import com.example.delivery.domain.Menu;
 import com.example.delivery.domain.Store;
 import com.example.delivery.domain.User;
@@ -138,8 +138,8 @@ public class StoreServiceImpl implements StoreService {
     // 음식점 조회를 위한 리스트 반환 (“사장님” 및 “고객님”은 카테고리 기반으로 음식점을 검색하여 볼 수 있어야 합니다)
     @Override
     public StorePageDto.Info searchStoreByCategory(String category, int start, int size){
-        Page<Store> storePage = storeRepository.findByCategory(category,
-                PageRequest.of(start, size));
+        Pageable pageable = PageRequest.of(start, size);
+        Page<Store> storePage = storeRepository.searchByCategoryWithPaging(category, pageable);
 
         return  StorePageDto.Info.builder()
                 .stores(storePage.getContent().stream()
@@ -150,12 +150,10 @@ public class StoreServiceImpl implements StoreService {
                 .build();
     }
 
-
-
     @Override
-    public StorePageDto.Info searchStoreByKeyword(String category, int start, int size){
+    public StorePageDto.Info searchStoreByKeyword(String keyword, int start, int size){
         Pageable pageable = PageRequest.of(start, size);
-        Page<Store> storePage = storeRepository.searchByCategoryWithPaging(category, pageable);
+        Page<Store> storePage = storeRepository.findByMenuNameContainingKeyword(keyword, pageable);
 
         return StorePageDto.Info.builder()
                 .stores(storePage.getContent().stream()
@@ -171,26 +169,6 @@ public class StoreServiceImpl implements StoreService {
         Pageable pageable = PageRequest.of(start, size);
         return storeRepository.testProjection(category, pageable);
     }
-
-
-
-    // 음식점 조회를 위한 리스트 반환 (“사장님” 및 “고객님”은 키워드 기반으로 음식점을 검색하여 볼 수 있어야 합니다)
-//    @Override
-//    public StorePageDto.Info searchStoreByKeyword(String keyword, int start, int size) {
-//
-//        Page<Store> storePage = storeRepository.findByMenuNameContainingKeyword(keyword, PageRequest.of(start, size));
-//
-//        return  StorePageDto.Info.builder()
-//                .stores(storePage.getContent().stream()
-//                        .map(this::convertToStoreDto)
-//                        .toList())
-//                .idx(storePage.getNumber() + 1)
-//                .totalPage(storePage.getTotalPages())
-//                .build();
-//    }
-
-
-
 
     @Override
     public StoreDto.InfoResponse getStoreInfo(Integer storeId) {
@@ -224,7 +202,5 @@ public class StoreServiceImpl implements StoreService {
                 .workTime(store.getWorkTime())
                 .imageUrl(store.getImageUrl()).build();
     }
-
-
 
 }

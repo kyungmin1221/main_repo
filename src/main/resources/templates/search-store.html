@@ -67,13 +67,16 @@ input:focus {
         </div>
 </div>
 <script>
+
+    console.log(window.location.href.replace(window.location.href.split('/')[5], "피자"));
+
     function search(){
         var keyword = document.querySelector('#searchKeyword').value;
         if(keyword === ''){
          document.querySelector('#searchKeyword').focus();
          return;
         }
-        location.href = "/stores/search/" + keyword;
+        location.href = window.location.href.replace(window.location.href.split('/')[5], keyword) + "?page=1";
     }
 
     function getUrlParams() {
