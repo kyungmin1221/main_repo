@@ -5,12 +5,15 @@ import com.example.delivery.domain.Menu;
 import com.example.delivery.domain.QStore;
 import com.example.delivery.domain.Store;
 import com.example.delivery.domain.User;
+import com.example.delivery.dto.StoreDto;
 import com.example.delivery.repository.MenuRepository;
 import com.example.delivery.repository.StoreRepository;
 import com.example.delivery.repository.UserRepository;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,8 +43,7 @@ class DeliveryApplicationTests {
     private StoreRepository storeRepository;
 
     @Autowired
-    private MenuRepository menuRepository;
-
+    EntityManager em;
 
     @Test
     void insertDummyDataUserAndStore() {
@@ -73,9 +75,7 @@ class DeliveryApplicationTests {
             String category = generateRandomCategory();
             String address = "123 Main St, City, Country"; // 랜덤 주소를 생성하도록 수정 가능
             String imageUrl = "/img/logo.png"; // 적절한 이미지 URL을 넣으세요
-//            float storeScore = new Random().nextFloat() * 5; // 랜덤 가게 평점을 생성하도록 수정 가능
             float storeScore = 0; // 랜덤 가게 평점을 생성하도록 수정 가능
-            // double totalSales = new Random().nextInt(1000000); // 랜덤 총 매출액을 생성하도록 수정 가능
             double totalSales = 0; // 랜덤 총 매출액을 생성하도록 수정 가능
 
             // Store 객체 생성
@@ -108,39 +108,6 @@ class DeliveryApplicationTests {
     private String generateUniqueEmail() {
         return UUID.randomUUID().toString() + "@example.com"; // example.com 부분은 적절한 도메인으로 변경해야 합니다.
     }
-
-//    @Test
-//    void queryTest() {
-//        StopWatch stopWatch = new StopWatch();
-//        stopWatch.start();
-//
-//        List<Store> findStore = storeRepository.findByCategory("치킨");
-//
-//        stopWatch.stop();
-//        System.out.println("###################################");
-//        System.out.println(stopWatch.prettyPrint());
-//        System.out.println("###################################");
-//    }
-
-//    @Test
-//    void queryWithoutFetchJoinTest() {
-//        StopWatch stopWatch = new StopWatch();
-//        stopWatch.start();
-//
-//        List<Store> stores = storeRepository.findByCategory("치킨");
-//        for (Store store : stores) {
-//            System.out.println("가게 이름: " + store.getName());
-//
-//            User owner = userRepository.findById(store.getUser().getId()).orElse(null);
-//            if (owner != null) {
-//                System.out.println("이메일 : " + owner.getEmail());
-//            }
-//        }
-//
-//        stopWatch.stop();
-//        System.out.println("without Fetch Join Test");
-//        System.out.println(stopWatch.prettyPrint());
-//    }
 
 
     // 패치조인 테스트 ( 연관관계 있을 시 압도적 성능) - @Query 사용
@@ -176,6 +143,7 @@ class DeliveryApplicationTests {
         System.out.println(stopWatch.prettyPrint());
     }
 
+    // fetchJoin 테스트
     @Test
     public void testFindStoresWithUsersByCategories() {
         StopWatch stopWatch = new StopWatch();
@@ -194,74 +162,10 @@ class DeliveryApplicationTests {
         System.out.println(stopWatch.prettyPrint());
     }
 
-    // 페이징 처리
-    @Test
-    public void testPaging() {
-        List<Store> stores = storeRepository.pagingTest();
-
-        Assert.notEmpty(stores, "스토어 목록은 비어있지 않아야 합니다.");
-        Assert.isTrue(stores.size() <= 10, "크기는 10 이하여야 함");
-
-        // 선택적: 반환된 스토어 목록의 내용을 출력하여 검증ㅌ
-        stores.forEach(store -> System.out.println(store.getName()));
-    }
 
 
-    // 페이징
-//    @Test
-//    public void testFindAllWithUsers() {
-//        StopWatch stopWatch = new StopWatch();
-//        stopWatch.start(); // 타이머 시작
-//
-//        // 페이징 요청 생성
-//        PageRequest pageRequest = PageRequest.of(0, 5);
-//        // 커스텀 리포지토리 메서드 호출
-//        Page<Store> storePage = storeRepository.findAllWithUsers(pageRequest);
-//
-//        stopWatch.stop(); // 타이머 정지
-//        System.out.println("시간: " + stopWatch.getTotalTimeMillis() + "ms");
-//
-//        // 조회 결과 출력
-//        for (Store store : storePage.getContent()) {
-//            System.out.println("Store Name: " + store.getName());
-//            // 연관된 User 정보 출력
-//            if (store.getUser() != null) {
-//                System.out.println("Email: " + store.getUser().getEmail());
-//            }
-//            System.out.println();
-//        }
-//    }
 
-
-    // 페이징 테스트 2
-//    @Test
-//    public void testFindAllWithUsers() {
-//        StopWatch stopWatch = new StopWatch("Store and User Fetch Test");
-//        stopWatch.start("Fetch Stores with Users by Categories");
-//
-//        // 카테고리 리스트 생성
-//        List<String> categories = Arrays.asList("치킨", "피자");
-//
-//        // 수정된 메서드 호출
-//        List<Store> storesWithUser = storeRepository.findStoresWithUsersByCategories(categories);
-//
-//        stopWatch.stop();
-//        System.out.println("###################################");
-//        System.out.println("--- 패치조인 + dsl 테스트 ---");
-//        System.out.println("###################################");
-//        System.out.println(stopWatch.prettyPrint());
-//
-//        // 조회 결과를 출력하는 부분도 추가할 수 있습니다.
-//        storesWithUser.forEach(store -> {
-//            System.out.println("Store Name: " + store.getName());
-//            // 연관된 User 정보 출력, 이 부분은 해당하는 관계와 필드에 따라 달라질 수 있습니다.
-//            if (store.getUser() != null) {
-//                System.out.println("Owner: " + store.getUser().getEmail());
-//            }
-//            System.out.println();
-//        });
-//    }
-
+    // 페이징 처리 테스트 - count 분리
     @Test
     public void testFindAllWithUsers() {
         StopWatch stopWatch = new StopWatch();
@@ -288,5 +192,30 @@ class DeliveryApplicationTests {
         }
     }
 
+    @Test
+    public void sortTest() {
+        List<Store> list = storeRepository.sort();
+        for (Store store1 : list) {
+            System.out.println("store1 = " + store1);
+        }
+    }
 
+    @Test
+    public void tupleTest() {
+        List<Tuple> results = storeRepository.tupleTest("kyungmin",1);
+        for (Tuple result : results) {
+            String name = result.get(store.name);
+            Integer id = result.get(store.id);
+            System.out.println("id = " + id);
+            System.out.println("name = " + name);
+        }
+    }
+
+    @Test
+    public void findDtoTest() {
+        List<StoreDto.InfoResponse> result  = storeRepository.findDtoTest("치킨");
+        for (StoreDto.InfoResponse infoResponse : result) {
+            System.out.println("infoResponse category :  " + infoResponse);
+        }
+    }
 }

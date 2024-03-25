@@ -3,7 +3,7 @@ package com.example.delivery.controller;
 import com.example.delivery.constant.Role;
 import com.example.delivery.dto.OrderDto;
 import com.example.delivery.dto.StoreDto;
-import com.example.delivery.security.UserDetailsImpl;
+import com.example.delivery.global.security.UserDetailsImpl;
 import com.example.delivery.service.order.OrderService;
 import com.example.delivery.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -115,23 +115,23 @@ public class   StoreController {
     }
 
 
-    // 음식점 검색
+    // 음식점 검색 - 카테고리를 기준으로 검색 (메인 카테고리)
     @GetMapping("/category/{categoryName}")
     public String searchByCategoryName(Model model, @PathVariable String categoryName,
                                        @RequestParam int page) {
-        int size = 20;
-        int offset = (page-1) * size;
+        int size = 5;
+        int offset = (page-1);
         model.addAttribute("page",
                 storeService.searchStoreByCategory(categoryName, offset, size));
         return "search-store";
     }
 
-    // 음식점 검색
+    // 음식점 검색 - 메뉴를 기준으로 검색 (메뉴검색)
     @GetMapping("/search/{keyword}")
     public String searchByKeyword(Model model, @PathVariable String keyword,
                                   @RequestParam int page) {
-        int size = 20;
-        int offset = (page-1)*size;
+        int size = 5;
+        int offset = (page-1);
         model.addAttribute("page",
                 storeService.searchStoreByKeyword(keyword, offset, size));
         return "search-store";

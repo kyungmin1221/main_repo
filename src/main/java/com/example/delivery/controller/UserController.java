@@ -2,16 +2,15 @@ package com.example.delivery.controller;
 
 import com.example.delivery.dto.UserDto;
 import com.example.delivery.dto.UserRegisterDto;
-import com.example.delivery.exception.CustomException;
-import com.example.delivery.jwt.JwtUtil;
-import com.example.delivery.security.UserDetailsImpl;
+import com.example.delivery.global.exception.CustomException;
+import com.example.delivery.global.jwt.JwtUtil;
+import com.example.delivery.global.security.UserDetailsImpl;
 import com.example.delivery.service.KakaoService;
 import com.example.delivery.service.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.HashMap;
 
 @Slf4j(topic = "USER_CONTROLLER")
 @Controller
@@ -39,7 +36,6 @@ public class UserController {
     @PostMapping("/user/signup")
     public String registerUser(@ModelAttribute("user") @Valid  UserRegisterDto.UserRegisterRequestDto requestDto,
                                RedirectAttributes redirectAttributes) {
-
         try {
             UserRegisterDto.UserRegisterResponseDto responseDto = userService.registerUser(requestDto);
             redirectAttributes.addFlashAttribute("success", "회원가입에 성공했습니다. 로그인해주세요.");

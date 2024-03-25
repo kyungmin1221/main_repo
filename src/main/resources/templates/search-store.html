@@ -31,6 +31,8 @@ input:focus {
     a:link { color: black; text-decoration: none;}
     a:visited { color: black; text-decoration: none;}
     a:hover { color: black; text-decoration: none;}
+
+#storeCard { margin: 5px 50px 5px 50px;}
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -54,9 +56,9 @@ input:focus {
                             <img style="height: 100%; width:100%; object-fit:cover;" th:src="${store.imageUrl}" class="img-fluid rounded-start">
                         </div>
                         <div class="col-md-8">
-                            <div class="card-body" style="background-color: #DDDDDD">
+                            <div class="card-body" style="background-color:#F0F8FF">
                                 <h5 class="card-title">[[${store.name}]] - <span style="color:#ffd43c">★</span> [[${store.storeScore}]] </h5>
-                                <p class="card-text overflow-auto" th:text="${store.workTime}"style="height: 130px;"></p>
+                                <p class="card-text overflow-auto" th:text="${store.workTime}" style="height: 130px;"></p>
                             </div>
                         </div>
                     </div>
@@ -65,13 +67,16 @@ input:focus {
         </div>
 </div>
 <script>
+
+    console.log(window.location.href.replace(window.location.href.split('/')[5], "피자"));
+
     function search(){
         var keyword = document.querySelector('#searchKeyword').value;
         if(keyword === ''){
          document.querySelector('#searchKeyword').focus();
          return;
         }
-        location.href = "/stores/search/" + keyword;
+        location.href = window.location.href.replace(window.location.href.split('/')[5], keyword) + "?page=1";
     }
 
     function getUrlParams() {

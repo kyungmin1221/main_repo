@@ -15,5 +15,6 @@ public class StorePageDto {
         private final List<StoreDto.SearchResponse> stores;
         private int idx;
         private int totalPage;
+        private String category;
     }
 }

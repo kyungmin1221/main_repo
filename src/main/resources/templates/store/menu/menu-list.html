@@ -30,9 +30,9 @@
         </thead>
         <tbody>
             <tr th:each="menu : ${menus}">
-                <th scope="row"><img th:src="${menu.imageUrl}"></th>
-                <td th:text="${menu.name}">허니콤보</td>
-                <td th:text="${menu.price}">22,000</td>
+                <th scope="row"><img th:src="${menu.imageUrl}" width="200 px" height="200 px"></th>
+                <td th:text="${menu.name}"></td>
+                <td th:text="${menu.price}"></td>
                 <td style="text-align: right">
                     <button type="button" th:onclick="|location.href='@{/stores/menus/update}'|" class="btn btn-success">수 정</button>
                     <button type="button" class="btn btn-danger">삭 제</button>

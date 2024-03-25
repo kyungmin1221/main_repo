@@ -24,7 +24,6 @@ public class MenuDto {
 
         private String imageUrl;
 
-//        private StoreDto.InfoResponse store;
         @Builder
         public Get(Menu menu){
             this.menuId = menu.getId();

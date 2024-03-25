@@ -5,7 +5,7 @@ package com.example.delivery.service;
 import com.example.delivery.constant.Role;
 import com.example.delivery.domain.User;
 import com.example.delivery.dto.KakaoUserInfoDto;
-import com.example.delivery.jwt.JwtUtil;
+import com.example.delivery.global.jwt.JwtUtil;
 import com.example.delivery.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -67,7 +67,7 @@ public class KakaoService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "230b700257f59229b1175b59dc142db6");
-        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
+        body.add("redirect_uri", "https://www.foodreum.store/api/user/kakao/callback");
         body.add("code", code);
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity

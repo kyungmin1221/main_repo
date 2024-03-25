@@ -28,9 +28,9 @@ public class StoreDto {
         private String category;
         private String address;
         private float storeScore;
-        //private int likeCount;
         private double totalSales;
         private String imageUrl;
+
     }
 
     // 음식점 검색 결과
@@ -45,6 +45,7 @@ public class StoreDto {
         private float storeScore;
         private String imageUrl;
         private String workTime;
+
     }
 
     // 음식점 메뉴 등록 요청
